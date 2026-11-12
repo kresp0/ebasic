@@ -135,7 +135,7 @@ The statements that the CP/M edition answered with `Sorry` (from `HOOK.Z80`) are
 | 1 (`0x80`) | the interpreter (`MAIN`, `EXEC`, `EVAL`, `MATH`, `DATA`), `genio1.s` (start-up, entry stubs, `TRAP`, `TIME`, errors, keyboard scan, keyword names, trampolines), the sound engine | 11 bytes |
 | 2 (`0x83`) | `genio2.s` (LCD, editor), `stmt.s` (statements, VDU, graphics), `help.s` + guide data, `ASMB.Z80`, stubs to page 1 | 17 bytes |
 
-* **Selecting a page:** on the RevD board with a 32 KiB AT28C256, bit 1 of the port 0x03 selector drives A14 (measured on the unit). MAME uses bit 0, so `0x83` reaches the second half on both.
+* **Selecting a page:** on the RevD board with a 32 KiB AT28C256, bit 1 of the port 0x03 selector drives A14 (measured on the unit: [HW_RESULTS_20261110.md](https://github.com/kresp0/vtech-genio2000/blob/main/docs/firmware/HW_RESULTS_20261110.md), test 3). MAME uses bit 0, so `0x83` reaches the second half on both.
 * **Calls between pages** go through trampolines in RAM. They switch the page, call, and switch back, passing every register and flag through unchanged. The checks at assembly time make sure both pages agree on the slots of the page-2 jump table.
 * **Statements** entered from page 1 continue at the interpreter's `XEQ`, and drop the trampoline's return address first.
 * **Page-2 code that needs interpreter routines** (`EXPRI`, `COMMA`, ...; the assembler's `VAR`, `STOREN`, ...) calls stubs. `mksyms.py` generates them from the page-1 map.
@@ -153,7 +153,7 @@ The statements that the CP/M edition answered with `Sorry` (from `HOOK.Z80`) are
 
 * **Screen:** an 80-byte shadow screen, written cell by cell with the gl4000 DDRAM map, with about 70 µs per LCD write and no busy-flag read.
 * **Text** is code page 850, the firmware's own internal code page. Nine codes are drawn from other glyphs: ñ Ñ ¡ ¿ º from the LCD's own ROM, and Á Í Ó Ú from CGRAM.
-* **`TIME`** uses the firmware's 46.76 Hz interrupt as a timer. The layer first checks the vector and the hook, then sets `DB00 = D0` and `DB01 = FF`, the latter because with `DB00 = D0` the firmware powers off when `DB01 = B4`, the value it has at entry on the real unit. If the check fails, `TIME` stays at 0.
+* **`TIME`** uses the firmware's 46.76 Hz interrupt as a timer. The layer first checks the vector and the hook, then sets `DB00 = D0` and `DB01 = FF`, the latter because with `DB00 = D0` the firmware powers off when `DB01 = B4`, the value it has at entry on the real unit ([INTERRUPTS.md](https://github.com/kresp0/vtech-genio2000/blob/main/docs/firmware/INTERRUPTS.md)). If the check fails, `TIME` stays at 0.
 
 ```bash
 make            # ebasic_gl2000_AT28C256_32K.bin for the EEPROM, ebasic_gl2000_mame_64K.bin for MAME's -cart
@@ -165,7 +165,7 @@ Needs `sdasz80`, `sdldz80` (SDCC 4.5) and `python3`.
 **Verified in headless MAME** (`tests/`; logs of the final image in `tests/results/`):
 * **The language** (`t1`-`t4`): arithmetic, floats, strings, recursion, `PROC` with arrays, errors, Escape, `TAB`, `INKEY`.
   * Speed: `FOR I%=1 TO 1000:NEXT` takes 0.40 s.
-  * `TIME` runs 6.9 % fast in MAME, whose interrupt is 50 Hz instead of the 46.76 Hz measured on the unit.
+  * `TIME` runs 6.9 % fast in MAME, whose interrupt is 50 Hz instead of the 46.76 Hz measured on the unit ([CLOCK_AND_SOUND.md](https://github.com/kresp0/vtech-genio2000/blob/main/docs/hardware/CLOCK_AND_SOUND.md)).
 * **Editor** (`t12`): views, insertion, saving on moving, errors on the console and blinking on the top rows, the error line loaded.
 * **Guide** (`t16`): index, Ü/; without ALT, a letter jumps (from the index and from a page), keyword at the cursor, example copied and run.
 * **Activity keys** (`t17`): PRINT, DIM, DEF, LEFT$( and LIST typed in the editor. `GET` gives 254, 255, 253, 192 for 1 JUGADOR, 2 JUGADORES, NIVEL, BUSCA LA LETRA.
@@ -182,7 +182,7 @@ Needs `sdasz80`, `sdldz80` (SDCC 4.5) and `python3`.
 
 **Not tested on hardware.** Nothing of EBASIC has run on a real unit. The risks, most serious first:
 1. **The second cartridge page (`0x83`):** the selector bit was measured on the RevD board, but no code has ever run from the second half on the unit.
-2. **The firmware ISR as a timer:** it relies on firmware internals (`DB00/DB01`, `DCF0-DCF7`, hook `DFF5`), as one combination; `hwtest` measured the parts separately.
+2. **The firmware ISR as a timer:** it relies on firmware internals (`DB00/DB01`, `DCF0-DCF7`, hook `DFF5`), as one combination; `hwtest` measured the parts separately ([HW_RESULTS_20261110.md](https://github.com/kresp0/vtech-genio2000/blob/main/docs/firmware/HW_RESULTS_20261110.md)).
 3. **LCD timing:** no busy-flag read, and CGRAM is rewritten with interrupts off (64 bytes, about 4.5 ms).
 4. **Reading the activity panel** through port 0x11 in the same scan as the main keys. The firmware does this, but EBASIC's own scan has not run on the unit.
 5. **The sound:** loop timing on the real clock; the speaker's own response is not modelled.
