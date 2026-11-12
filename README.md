@@ -14,8 +14,8 @@ The language is the full v5: integer, 40-bit float, string and byte variables, a
 **About the name.** EBASIC is not an official edition of BBC BASIC. The interpreter's sources say that the name "BBC BASIC" is used with the BBC's permission and does not transfer to derived works, so this cartridge has its own name. The interpreter modules are Russell's, assembled unchanged except for the banner lines. The first screen reads:
 
 ```
-EBASIC 1.0      5501
-(C) Santiago Crespo
+EBASIC 1.0 by   5501
+Santiago Crespo 2026
 BASIC by R.T.Russell
 >
 ```
@@ -132,7 +132,7 @@ The statements that the CP/M edition answered with `Sorry` (from `HOOK.Z80`) are
 ## How it is built
 | Page (port 0x03) | Contents | Free |
 |---|---|---|
-| 1 (`0x80`) | the interpreter (`MAIN`, `EXEC`, `EVAL`, `MATH`, `DATA`), `genio1.s` (start-up, entry stubs, `TRAP`, `TIME`, errors, keyboard scan, keyword names, trampolines), the sound engine | 15 bytes |
+| 1 (`0x80`) | the interpreter (`MAIN`, `EXEC`, `EVAL`, `MATH`, `DATA`), `genio1.s` (start-up, entry stubs, `TRAP`, `TIME`, errors, keyboard scan, keyword names, trampolines), the sound engine | 11 bytes |
 | 2 (`0x83`) | `genio2.s` (LCD, editor), `stmt.s` (statements, VDU, graphics), `help.s` + guide data, `ASMB.Z80`, stubs to page 1 | 17 bytes |
 
 * **Selecting a page:** on the RevD board with a 32 KiB AT28C256, bit 1 of the port 0x03 selector drives A14 (measured on the unit). MAME uses bit 0, so `0x83` reaches the second half on both.

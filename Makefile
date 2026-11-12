@@ -17,9 +17,9 @@ all: $(NAME)_AT28C256_32K.bin
 # The one change to the interpreter: its banner names this cartridge, its author and Russell's BASIC
 out/MAIN.s: bbcz80/MAIN.Z80 m80_to_sdas.py Makefile
 	@mkdir -p out
-	sed -e "s/^VERMSG:\tDEFM\t'BBC BASIC (Z80) Version 5.00  '/VERMSG:\tDEFM\t'EBASIC 1.0'/" \
-	    -e "s/^NOTICE:\tDEFM\t'(C) Copyright R.T.Russell 2025'/NOTICE:\tDEFM\t'(C) Santiago Crespo'\n\tDEFB\tCR\n\tDEFB\tLF\n\tDEFM\t'BASIC by R.T.Russell'/" $< > out/MAIN.Z80
-	grep -q "^VERMSG:.*'EBASIC 1.0'" out/MAIN.Z80
+	sed -e "s/^VERMSG:\tDEFM\t'BBC BASIC (Z80) Version 5.00  '/VERMSG:\tDEFM\t'EBASIC 1.0 by'/" \
+	    -e "s/^NOTICE:\tDEFM\t'(C) Copyright R.T.Russell 2025'/NOTICE:\tDEFM\t'Santiago Crespo 2026'\n\tDEFB\tCR\n\tDEFB\tLF\n\tDEFM\t'BASIC by R.T.Russell'/" $< > out/MAIN.Z80
+	grep -q "^VERMSG:.*'EBASIC 1.0 by'" out/MAIN.Z80
 	grep -q "'BASIC by R.T.Russell'" out/MAIN.Z80
 	python3 m80_to_sdas.py out/MAIN.Z80 $@ CODE
 
