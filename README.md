@@ -22,6 +22,11 @@ BASIC by R.T.Russell
 
 The number at the top right is the memory free for programs and variables (`HIMEM-LOMEM`), worked out at start-up. `REPORT` before any error shows the second and third lines, where the original showed Russell's notice.
 
+**Machines.** Written for the Spanish VTech Genio 2000, and tested in MAME so far. It will most likely also work on its
+relatives the Genius 4000, Genius LEADER 4000 Quadro, Genius LEADER 4004 Quadro L and PreComputer
+Power Pad, but it has not been tried on them; their keyboards carry other legends, so the key names
+used here and some typed characters may differ.
+
 ## Keys
 The legends on the Genio's keys are in Spanish. This README and the cartridge call the special keys by English names:
 
