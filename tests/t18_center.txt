@@ -1,0 +1,9 @@
+wait 1.5
+type MODE 1:CIRCLE 10,8,7:PRINT "ok"\n
+wait 1.5
+snap
+dump drawn
+type X
+wait 0.5
+dump editor_back
+quit

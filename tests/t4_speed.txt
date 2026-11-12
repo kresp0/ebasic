@@ -1,0 +1,8 @@
+wait 1.5
+type T%=TIME:FOR I%=1 TO 1000:NEXT:PRINT TIME-T%\n
+wait 4
+dump for
+type T%=TIME:FOR I%=1 TO 200:A=A+1:NEXT:PRINT TIME-T%\n
+wait 4
+dump assign
+quit

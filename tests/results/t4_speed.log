@@ -1,0 +1,10 @@
+--- for t=11.00
+|                    |
+|>NEXT:PRINT TIME-T% |
+|        43          |
+|>                   |
+--- assign t=21.16
+|                    |
+|>NEXT:PRINT TIME-T% |
+|        28          |
+|>                   |

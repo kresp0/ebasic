@@ -1,0 +1,9 @@
+wait 1.5
+type VDU 7\n
+wait 1
+type PRINT "A";CHR$7;"B"\n
+wait 1
+dump beep
+hold OFF 2.5
+wait 2
+quit

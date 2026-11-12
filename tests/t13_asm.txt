@@ -1,0 +1,18 @@
+wait 1.5
+type 10 DIM C% 20\n
+type 20 FOR pass=0 TO 2 STEP 2\n
+type 30 P%=C%\n
+type 40 [OPT pass\n
+type 50 LD HL,1234\n
+type 60 RET\n
+type 70 ]\n
+type 80 NEXT\n
+type 90 PRINT ~USR(C%)\n
+type RUN\n
+wait 1
+dump usr
+type 40 [OPT 3\n
+type RUN\n
+wait 1.5
+dump listing
+quit

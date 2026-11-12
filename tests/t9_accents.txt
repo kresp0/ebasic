@@ -1,0 +1,12 @@
+wait 1.5
+type CLS:PRINT "áéíóú ÁÉÍÓÚ":PRINT "ñÑüÜ¡¿"\n
+wait 0.5
+dump accents
+snap
+type PRINT ASC("Á"),ASC("ñ"),ASC("é")\n
+wait 0.5
+dump codes
+type CLS:PRINT "Ñu Ácido ¿Sí?"\n
+wait 0.5
+dump mixed
+quit

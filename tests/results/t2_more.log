@@ -1,0 +1,54 @@
+peek D8D2 t=1.52: 9E 00 00 00 
+peek D8D2 t=11.54: CD 04 00 00 
+--- proc t=32.10
+|50 ENDPROC          |
+|>RUN                |
+|Sum=285             |
+|>                   |
+--- strings t=40.00
+|>",2,3),EVAL("3*7") |
+|         3eni       |
+|        21          |
+|>                   |
+--- backspace t=45.14
+|>4567890 ABCDEFGHIX |
+|1.23456789E19       |
+|No such variable    |
+|>                   |
+--- scroll30 t=51.04
+|        28          |
+|        29          |
+|        30          |
+|>                   |
+--- tab t=55.46
+|                    |
+|                    |
+|     XY72           |
+|>                   |
+--- inkey t=63.94
+|50 ENDPROC          |
+|>):PRINT TIME-T%,K% |
+|       222        -1|
+|>                   |
+--- ints t=70.84
+|  7FFFFFFF2.14748365|
+|E9                -1|
+|         3        15|
+|>                   |
+--- loop t=82.76
+|50 ENDPROC          |
+|>L N%=3000:PRINT N% |
+|      3000          |
+|>                   |
+--- symbols t=87.58
+|50 ENDPROC          |
+|>PRINT "\[]|~@_=-+" |
+|lower\[]|~@_=-+     |
+|>                   |
+snap t=87.60
+--- star t=88.56
+|30 DEF PROCs(B%()):L|
+|40 FOR I%=0 TO 9:T%+|
+|50 ENDPROC          |
+|>                   |
+peek D8D0 t=89.58: 01 03 

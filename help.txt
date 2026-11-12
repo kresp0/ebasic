@@ -1,0 +1,546 @@
+# Guide shown by the HELP (AYUDA) key. "@TITLE" starts an entry, the following lines are its text
+# (joined with spaces; an empty line starts a new line on the screen), "=..." is the example
+# that ENTER copies into the prompt. Lines starting with "#" are comments.
+# Copyright (C) 2026 Santiago Crespo
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+@Editor keys
+Rows 1-3 show the program, row 4 is the prompt.
+ALT+Ü / ALT+;: line above / below (a changed line is stored). LEFT, RIGHT: move; with ALT: start, end. DELETE deletes left, DEL right. ENTER enters the line. SHIFT+HELP: TAB.
+
+@Using the guide
+HELP opens it; on a keyword, its page.
+Ü or ; (or LEFT, RIGHT): move. A letter jumps to it. ENTER opens a page, and there copies the example to the prompt. ANSWER goes back.
+
+@Activity keys
+The top panel types keywords (try them). In a program GET gives 192+n for the n-th key (0-21), 218+n (22-37), down each column: 1 PLAYER 254, 2 PLAYERS 255.
+
+@ABS
+ABS(x): x without its sign.
+=PRINT ABS(-7.5)
+
+@ACS
+ACS(x): arc cosine of x, in radians (x from -1 to 1).
+=PRINT DEG(ACS(0.5))
+
+@ADVAL
+ADVAL(-1): 1 if a key is waiting, else 0. ADVAL(-5 to -8): 15. Others: 0.
+=PRINT ADVAL(-1)
+
+@AND
+a AND b: true if both are true; on integers, bitwise AND.
+=PRINT 12 AND 10, (1<2) AND (2<3)
+
+@ASC
+ASC(s$): the code of the first character of s$, -1 if s$ is empty.
+=PRINT ASC("A")
+
+@ASN
+ASN(x): arc sine of x, in radians.
+=PRINT DEG(ASN(1))
+
+@ATN
+ATN(x): arc tangent of x, in radians.
+=PRINT 4*ATN(1)
+
+@AUTO
+AUTO [start[,step]]: numbers the lines you type. ANSWER ends it. No line keys in AUTO.
+=AUTO 100,10
+
+@BGET
+BGET#c: reads a byte from a file. The Genio has no filing system: error.
+
+@BPUT
+BPUT#c,n: writes a byte to a file. The Genio has no filing system: error.
+
+@BY
+MOVE BY, DRAW BY, PLOT BY, FILL BY: the point is relative to the last one.
+=MODE 1:MOVE 2,2:DRAW BY 15,10
+
+@CALL
+CALL addr: runs machine code at addr; A%, B%, C%... go in the registers. See USR and [.
+
+@CASE
+CASE x OF / WHEN a,b: ... / OTHERWISE ... / ENDCASE: runs the WHEN part that matches x. In a program.
+=10 CASE N% OF:WHEN 1:PRINT "one":OTHERWISE PRINT "many":ENDCASE
+
+@CHAIN
+CHAIN name$: loads and runs a program. The Genio has no filing system: error.
+
+@CHR$
+CHR$(n): the character with code n (code page 850: CHR$164 is n-tilde).
+=PRINT CHR$(65);CHR$(164)
+
+@CIRCLE
+CIRCLE [FILL] x,y,r: a circle in the graphics window (MODE 1), centre x,y, radius r pixels.
+=MODE 1:CIRCLE 10,8,6
+
+@CLEAR
+CLEAR: forgets all variables, arrays, procedures and functions.
+
+@CLG
+CLG: clears the graphics window to the background colour.
+
+@CLOSE
+CLOSE#c: closes a file; CLOSE#0 closes all. Nothing to close on the Genio.
+
+@CLS
+CLS: clears the text screen.
+
+@COLOUR
+COLOUR n (also COLOR): text colour. The LCD has one colour: Sorry.
+
+@COS
+COS(x): cosine of x (x in radians).
+=PRINT COS(PI)
+
+@COUNT
+COUNT: characters printed since the last new line.
+=PRINT "abc";COUNT
+
+@DATA
+DATA a,b,...: values that READ takes, in order. In a program.
+=10 DATA 3,"three",3.5
+
+@DEF
+DEF FNname(args)=expr or DEF PROCname(args): starts a function or procedure. In a program, after the main part.
+=100 DEF FNsq(x)=x*x
+
+@DEG
+DEG(x): radians to degrees.
+=PRINT DEG(PI)
+
+@DELETE
+DELETE a,b: deletes program lines a to b.
+=DELETE 10,90
+
+@DIM
+DIM a(n): array, 0 to n (also a$(), a%(), more sizes). DIM v% n: n+1 bytes, address in v%.
+=DIM A%(9):A%(3)=7:PRINT A%(3)
+
+@DIV
+a DIV b: integer division, rounded towards zero.
+=PRINT 17 DIV 5
+
+@DRAW
+DRAW x,y: a line from the last point to x,y in the graphics window (MODE 1).
+=MODE 1:MOVE 0,0:DRAW 19,15
+
+@ELLIPSE
+ELLIPSE [FILL] x,y,a,b: an ellipse in the graphics window, centre x,y, half widths a and b.
+=MODE 1:ELLIPSE FILL 10,8,9,4
+
+@ELSE
+ELSE: the other part of IF ... THEN ... ELSE, or of a multi-line IF (ENDIF).
+=IF 2>3 THEN PRINT "yes" ELSE PRINT "no"
+
+@END
+END: ends the program.
+
+@ENDCASE
+ENDCASE: ends a CASE ... OF block.
+
+@ENDIF
+ENDIF: ends a multi-line IF: IF x THEN (end of line) ... ELSE ... ENDIF.
+
+@ENDPROC
+ENDPROC: returns from a procedure (DEF PROC).
+
+@ENDWHILE
+ENDWHILE: ends a WHILE loop.
+
+@ENVELOPE
+ENVELOPE n,t,p1,p2,p3,n1,n2,n3 and 6 volume values (ignored): pitch envelope n (1-4) for SOUND c,n,p,d. Every t cs the pitch moves by p1 (n1 times), then p2, p3; again unless t>127.
+=ENVELOPE 1,2,4,-4,0,6,6,0,0,0,0,0,0,0:SOUND 1,1,99,40
+
+@EOF
+EOF#c: true at the end of a file. The Genio has no filing system.
+
+@EOR
+a EOR b: exclusive or; on integers, bitwise.
+=PRINT 12 EOR 10
+
+@ERL
+ERL: line number of the last error.
+
+@ERR
+ERR: number of the last error.
+
+@ERROR
+ON ERROR statement: what to do on an error; ON ERROR OFF: back to normal. ERROR n,s$ makes one.
+=10 ON ERROR PRINT REPORT$:END
+
+@EVAL
+EVAL(s$): the value of the expression in s$.
+=PRINT EVAL("2^10")
+
+@EXIT
+EXIT FOR, EXIT REPEAT, EXIT WHILE: leaves the loop early.
+=20 IF I=4 THEN EXIT FOR
+
+@EXP
+EXP(x): e to the power x.
+=PRINT EXP(1)
+
+@EXT
+EXT#c: length of a file. The Genio has no filing system.
+
+@FALSE
+FALSE: the value 0.
+
+@FILL
+FILL x,y: fills the area around x,y. CIRCLE, ELLIPSE, RECTANGLE FILL draw solid shapes.
+=MODE 1:CIRCLE 10,8,6:FILL 10,8
+
+@FN
+FNname(args): calls a function made with DEF FN.
+=PRINT FNsq(4)
+
+@FOR
+FOR v=a TO b [STEP s] ... NEXT: repeats with v from a to b.
+=FOR I=1 TO 5:PRINT I;:NEXT
+
+@GCOL
+GCOL [a,]c: colour c (1 on, 0 off), action a: 0 set, 1 OR, 2 AND, 3 EOR, 4 invert. c+128: background.
+=MODE 1:GCOL 3,1:RECTANGLE FILL 2,2,10,10
+
+@GET
+GET: waits for a key and gives its code. LEFT 136, RIGHT 137, ALT+; 138, ALT+Ü 139, top panel 192-255.
+
+@GET$
+GET$: waits for a key and gives it as a string.
+=A$=GET$:PRINT A$
+
+@GOSUB
+GOSUB line: runs the lines from there until RETURN. PROC is usually better.
+=10 GOSUB 100
+
+@GOTO
+GOTO line: goes on at that line.
+=10 GOTO 30
+
+@HIMEM
+HIMEM: top of the memory for BASIC (&D880 on the Genio).
+=PRINT ~HIMEM
+
+@IF
+IF cond THEN ... [ELSE ...]: runs the THEN part if cond is true (not 0).
+=IF 3>2 THEN PRINT "yes"
+
+@INKEY
+INKEY(t): waits up to t centiseconds for a key; its code, or -1 if none.
+=PRINT INKEY(200)
+
+@INKEY$
+INKEY$(t): like INKEY, as a string ("" if none).
+=PRINT INKEY$(300)
+
+@INPUT
+INPUT ["text",] v: asks for a value. INPUT LINE takes the whole line.
+=INPUT "Name",N$:PRINT N$
+
+@INSTALL
+INSTALL name$: loads a library. The Genio has no filing system.
+
+@INSTR
+INSTR(a$,b$[,n]): where b$ is in a$ (from n), 0 if not there.
+=PRINT INSTR("GENIO","N")
+
+@INT
+INT(x): the largest whole number not above x.
+=PRINT INT(-2.5)
+
+@LEFT$
+LEFT$(s$,n): the first n characters of s$.
+=PRINT LEFT$("Genio",3)
+
+@LEN
+LEN(s$): number of characters in s$.
+=PRINT LEN("Genio")
+
+@LET
+LET v=expr: gives v a value. LET can be left out.
+=LET A=5:PRINT A
+
+@LINE
+LINE x1,y1,x2,y2: a line in the graphics window. INPUT LINE reads a whole line.
+=MODE 1:LINE 0,15,19,0
+
+@LIST
+LIST [a,b]: shows the program, or lines a to b. LISTO n sets indentation and spaces.
+
+@LN
+LN(x): natural logarithm of x.
+=PRINT LN(10)
+
+@LOAD
+LOAD name$: loads a program. The Genio has no filing system: error.
+
+@LOCAL
+LOCAL v,...: variables of a procedure or function only.
+=105 LOCAL I%
+
+@LOG
+LOG(x): logarithm of x in base 10.
+=PRINT LOG(1000)
+
+@LOMEM
+LOMEM: start of the variables, after the program.
+=PRINT ~LOMEM
+
+@MID$
+MID$(s$,start[,n]): n characters of s$ from position start (1 = first).
+=PRINT MID$("GENIO",2,3)
+
+@MOD
+a MOD b: remainder of a DIV b.
+=PRINT 17 MOD 5
+
+@MODE
+MODE 0: text only. MODE 1: also a 20x16 pixel graphics window in the middle (accented capitals do not show there). Clears the screen. As a function: 0 or 1.
+=MODE 1:CIRCLE 10,8,7
+
+@MOUSE
+MOUSE x,y,b: there is no mouse: Sorry.
+
+@MOVE
+MOVE x,y: moves the graphics point to x,y without drawing.
+=MODE 1:MOVE 0,8:DRAW 19,8
+
+@NEW
+NEW: deletes the program (OLD brings it back, if nothing else was typed).
+
+@NEXT
+NEXT [v]: end of a FOR loop.
+=FOR I=1 TO 3:PRINT I:NEXT
+
+@NOT
+NOT x: true if x is false; on integers, all bits inverted.
+=PRINT NOT 0
+
+@OF
+OF: part of CASE x OF.
+
+@OFF
+OFF: hides the cursor while a program waits for a key; ON shows it. ON ERROR OFF: normal errors.
+=OFF:A=GET:ON
+
+@OLD
+OLD: brings back a program after NEW.
+
+@ON
+ON x GOTO/GOSUB/PROC a,b,...: jumps to the x-th one. ON ERROR: see ERROR. ON alone: cursor on.
+=10 ON N% GOTO 100,200,300
+
+@OPENIN
+OPENIN(name$): opens a file. The Genio has no filing system: gives 0.
+
+@OPENOUT
+OPENOUT(name$): creates a file. No filing system: gives 0.
+
+@OPENUP
+OPENUP(name$): opens a file to change it. No filing system: gives 0.
+
+@OR
+a OR b: true if either is true; on integers, bitwise.
+=PRINT 12 OR 3
+
+@ORIGIN
+ORIGIN x,y: moves the graphics coordinates: 0,0 is then the pixel x,y.
+=MODE 1:ORIGIN 10,8:CIRCLE 0,0,5
+
+@OSCLI
+OSCLI s$: star command. There are none on the Genio: Bad command.
+
+@OTHERWISE
+OTHERWISE: the part of CASE that runs if no WHEN matched.
+
+@PAGE
+PAGE: start of the program (&C300).
+=PRINT ~PAGE
+
+@PI
+PI: 3.14159265.
+
+@PLOT
+PLOT [k,]x,y: k +1 draw, +2 invert, +3 erase, +4 absolute; 0 line, 64 point, 80 triangle, 96 box, 128 fill, 144 circle, 152 disc, 192 ellipse.
+=MODE 1:PLOT 69,5,5:PLOT 69,9,5
+
+@POINT
+POINT(x,y): 1 if the pixel is on, 0 if off, -1 outside the window.
+=MODE 1:PLOT 69,3,3:PRINT POINT(3,3)
+
+@POS
+POS: column of the text cursor (0-19).
+=PRINT "abc";POS
+
+@PRINT
+PRINT items: ; joins, , next field, ' new line. TAB(x), SPC(n) place text; ~ hex.
+=PRINT "A=";1;"B";TAB(10);~255
+
+@PROC
+PROCname(args): calls a procedure made with DEF PROC.
+
+@PTR
+PTR#c: position in a file. The Genio has no filing system.
+
+@PUT
+PUT port,n: n to an I/O port. PUT &12,&20 lights the caps LED; PUT &12,1 switches the Genio off!
+=PUT &12,&20
+
+@QUIT
+QUIT: leaves BASIC to the Genio menu. The program is lost.
+
+@RAD
+RAD(x): degrees to radians.
+=PRINT SIN(RAD(30))
+
+@READ
+READ v,...: takes the next values from DATA. RESTORE starts again.
+=10 READ A,B$
+
+@RECTANGLE
+RECTANGLE [FILL] x,y,w[,h]: a box in the graphics window from x,y, w wide and h high.
+=MODE 1:RECTANGLE 2,2,15,11
+
+@REM
+REM text: a comment, ignored.
+
+@RENUMBER
+RENUMBER [start[,step]]: numbers the program lines again.
+=RENUMBER 10,10
+
+@REPEAT
+REPEAT ... UNTIL cond: repeats until cond is true.
+=I=0:REPEAT I=I+1:UNTIL I*I>50:PRINT I
+
+@REPORT
+REPORT: prints the last error message; REPORT$ gives it as a string.
+
+@RESTORE
+RESTORE [line]: the next READ starts at the first DATA (or at line).
+
+@RETURN
+RETURN: back from GOSUB.
+
+@RIGHT$
+RIGHT$(s$,n): the last n characters of s$.
+=PRINT RIGHT$("Genio",2)
+
+@RND
+RND(n): random 1 to n. RND(1): 0 to 1. RND: random integer. RND(-n) restarts the sequence.
+=PRINT RND(6)
+
+@RUN
+RUN: runs the program from the start.
+
+@SAVE
+SAVE name$: saves the program. The Genio has no filing system: error.
+
+@SGN
+SGN(x): -1, 0 or 1, the sign of x.
+=PRINT SGN(-3)
+
+@SIN
+SIN(x): sine of x (x in radians).
+=PRINT SIN(PI/2)
+
+@SOUND
+SOUND c,a,p,d: a note. c 1-3 tone, 0 noise. a -15 to -1 on, 0 silent, 1-4 envelope. p pitch (53 = middle C, +4 = a semitone). d time in 1/20 s. The program waits while it plays.
+=SOUND 1,-15,53,10:SOUND 1,-15,69,10
+
+@SPC
+SPC(n): n spaces in PRINT or INPUT.
+=PRINT "a";SPC(5);"b"
+
+@SQR
+SQR(x): square root of x.
+=PRINT SQR(2)
+
+@STEP
+STEP s: the step of a FOR loop.
+=FOR I=10 TO 0 STEP -2:PRINT I;:NEXT
+
+@STOP
+STOP: stops the program with a message.
+
+@STR$
+STR$(x): x as a string; STR$~(x) in hex.
+=PRINT STR$(1/4)+"!"
+
+@STRING$
+STRING$(n,s$): s$ repeated n times.
+=PRINT STRING$(5,"*")
+
+@SUM
+SUM(a()): sum of an array's elements. SUMLEN: length of all strings.
+=DIM A(3):A()=1,2,3,4:PRINT SUM(A())
+
+@SWAP
+SWAP a,b: exchanges two variables.
+=A=1:B=2:SWAP A,B:PRINT A;B
+
+@SYS
+SYS: operating system calls. None on the Genio: Sorry.
+
+@TAB
+TAB(x): to column x. TAB(x,y): to column x, row y (0-19, 0-3).
+=PRINT TAB(5,2);"here"
+
+@TAN
+TAN(x): tangent of x (radians).
+=PRINT TAN(PI/4)
+
+@THEN
+THEN: part of IF.
+
+@TIME
+TIME: centiseconds since start (can be set: TIME=0).
+=TIME=0:WAIT 100:PRINT TIME
+
+@TINT
+TINT: grey levels. Not on the Genio: Sorry.
+
+@TO
+TO: part of FOR ... TO.
+
+@TRACE
+TRACE ON: shows each line number as it runs; TRACE OFF stops it.
+
+@TRUE
+TRUE: the value -1.
+
+@UNTIL
+UNTIL cond: end of REPEAT.
+
+@USR
+USR(addr): runs machine code at addr and gives HL'HL as a number.
+
+@VAL
+VAL(s$): the number at the start of s$.
+=PRINT VAL("12.5kg")+1
+
+@VDU
+VDU n,...: codes to the screen: 7 beep, 12 CLS, 22,m MODE, 25,k,x;y; PLOT, 31,x,y TAB. n; sends 2 bytes.
+
+@VPOS
+VPOS: row of the text cursor (0-3).
+
+@WAIT
+WAIT n: waits n centiseconds (ANSWER stops it).
+=WAIT 100:PRINT "1 s"
+
+@WHEN
+WHEN a,b,...: a case of CASE x OF.
+
+@WHILE
+WHILE cond ... ENDWHILE: repeats while cond is true.
+=I=1:WHILE I<100:I=I*2:ENDWHILE:PRINT I
+
+@WIDTH
+WIDTH n: PRINT starts a new line after n characters (0: never). As a function, WIDTH gives n.
+=WIDTH 10
+
+@[
+[ ... ]: Z80 assembler. Code goes to P%. OPT 0-3 sets listing and errors; labels are .name. In a program.
+=10 DIM C% 9:P%=C%:[OPT 0:LD A,65:RET:]

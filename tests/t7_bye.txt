@@ -1,0 +1,10 @@
+wait 1.5
+type QUIT\n
+wait 2
+press ESPACIO
+wait 2
+snap
+press SUMA
+wait 3
+snap
+quit

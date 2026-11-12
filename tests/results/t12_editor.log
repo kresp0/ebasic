@@ -1,0 +1,95 @@
+--- banner t=1.52
+|EBASIC 1.0      5501|
+|(C) Santiago Crespo |
+|BASIC by R.T.Russell|
+|>                   |
+--- after_10 t=3.78
+|                    |
+|                    |
+|10 PRINT "ten"      |
+|>                   |
+--- four_lines t=8.64
+|20 FOR I=1 TO 2     |
+|30   PRINT I*I      |
+|40 NEXT             |
+|>                   |
+--- up_40 t=9.22
+|10 PRINT "ten"      |
+|20 FOR I=1 TO 2     |
+|30   PRINT I*I      |
+|>40 NEXT            |
+--- up_20 t=9.96
+|                    |
+|                    |
+|10 PRINT "ten"      |
+|>20 FOR I=1 TO 2    |
+--- insert_3 t=10.72
+|                    |
+|                    |
+|10 PRINT "ten"      |
+|>20 FOR I=1 TO3 2   |
+--- saved_moved_30 t=11.30
+|                    |
+|10 PRINT "ten"      |
+|20 FOR I=1 TO3 2    |
+|>30   PRINT I*I     |
+--- past_end t=12.06
+|20 FOR I=1 TO3 2    |
+|30   PRINT I*I      |
+|40 NEXT             |
+|>                   |
+--- error_console t=13.58
+|ten                 |
+|Syntax error at line|
+| 20                 |
+|>                   |
+--- error_line_a t=13.94
+|                    |
+|                    |
+|10 PRINT "ten"      |
+|>20 FOR I=1 TO3 2   |
+--- error_line_b t=14.22
+|Syntax error at line|
+| 20                 |
+|10 PRINT "ten"      |
+|>20 FOR I=1 TO3 2   |
+--- error_hidden t=14.70
+|                    |
+|                    |
+|10 PRINT "ten"      |
+|>20 FOR I=1 TO3 2   |
+--- fixed_20 t=15.46
+|                    |
+|                    |
+|10 PRINT "ten"      |
+|>20 FOR I=1 TO3     |
+--- mistake_a t=17.48
+|20 FOR I=1 TO3      |
+|30   PRINT I*I      |
+|40 NEXT             |
+|>                   |
+--- mistake_b t=17.76
+|Mistake             |
+|30   PRINT I*I      |
+|40 NEXT             |
+|>                   |
+--- run_ok t=19.28
+|         1          |
+|         4          |
+|         9          |
+|>                   |
+--- key_kept t=19.76
+|20 FOR I=1 TO3      |
+|30   PRINT I*I      |
+|40 NEXT             |
+|>L                  |
+--- two_row_error_a t=22.88
+|No such variable at |
+|line 10             |
+|                    |
+|>10 PRINT X         |
+--- two_row_error_b t=23.16
+|                    |
+|                    |
+|                    |
+|>10 PRINT X         |

@@ -1,0 +1,70 @@
+--- banner t=1.52
+|EBASIC 1.0      5501|
+|(C) Santiago Crespo |
+|BASIC by R.T.Russell|
+|>                   |
+--- index t=2.18
+|>Editor keys        |
+| Using the guide    |
+| Activity keys      |
+| ABS                |
+--- index_down3 t=3.02
+| Editor keys        |
+| Using the guide    |
+| Activity keys      |
+|>ABS                |
+--- index_up1 t=3.58
+| Editor keys        |
+| Using the guide    |
+|>Activity keys      |
+| ABS                |
+--- letter_S t=4.16
+|>SAVE               |
+| SGN                |
+| SIN                |
+| SOUND              |
+--- page_SGN t=4.92
+|SAVE                |
+|SAVE name$: saves   |
+|the program. The    |
+|Genio has no filing |
+--- page_letter_P t=5.48
+|>PAGE               |
+| PI                 |
+| PLOT               |
+| POINT              |
+--- page_PLOT t=6.66
+|POINT               |
+|POINT(x,y): 1 if the|
+|pixel is on, 0 if   |
+|off, -1 outside the |
+--- page_scrolled t=7.36
+|pixel is on, 0 if   |
+|off, -1 outside the |
+|window.             |
+|e.g. MODE 1:PLOT    |
+--- back_index t=7.92
+| PAGE               |
+| PI                 |
+| PLOT               |
+|>POINT              |
+--- editor t=8.48
+|                    |
+|                    |
+|                    |
+|>                   |
+--- ctx_STRING t=10.84
+|STRING$             |
+|STRING$(n,s$): s$   |
+|repeated n times.   |
+|e.g. PRINT          |
+--- copied t=11.60
+|                    |
+|                    |
+|                    |
+|>INT STRING$(5,"*") |
+--- ran t=12.36
+|                    |
+|>INT STRING$(5,"*") |
+|*****               |
+|>                   |

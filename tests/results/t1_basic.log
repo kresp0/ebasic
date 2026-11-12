@@ -1,0 +1,60 @@
+--- boot t=1.52
+|EBASIC 1.0      5501|
+|(C) Santiago Crespo |
+|BASIC by R.T.Russell|
+|>                   |
+snap t=1.54
+--- print t=3.10
+|                    |
+|>PRINT 2+2          |
+|         4          |
+|>                   |
+--- float t=5.40
+|                    |
+|>PRINT PI,SQR(2)    |
+|3.141592651.41421356|
+|>                   |
+--- run t=14.86
+|4          9        |
+| 16         25      |
+|   36 n-tilde: {A4}    |
+|>                   |
+snap t=14.88
+--- fn t=24.04
+|>NT FNf(10),FNf(20) |
+|   36288002.43290201|
+|E18                 |
+|>                   |
+--- err t=25.60
+|10 FOR I=1 TO 6:PRIN|
+|20 PRINT "n-tilde: "|
+|40 DEF FNf(n):IF n<2|
+|>                   |
+--- mem t=29.76
+|>,~PAGE,~TOP,~LOMEM |
+|      D880      C300|
+|      C358      C358|
+|>                   |
+snap t=29.78
+--- time t=38.36
+|40 DEF FNf(n):IF n<2|
+|>PRINT TIME-T%      |
+|       719          |
+|>                   |
+peek D8D2 t=38.38: 03 10 00 00 92 A8 
+--- escape t=43.54
+| 16         25      |
+|   36 n-tilde: {A4}    |
+|Escape at line 30   |
+|>                   |
+--- list t=45.18
+|10 FOR I=1 TO 6:PRIN|
+|20 PRINT "n-tilde: "|
+|30 REPEAT:A=A+1:UNTI|
+|>                   |
+snap t=45.20
+--- get t=49.88
+|30 REPEAT:A=A+1:UNTI|
+|>;:A$=GET$:PRINT A$ |
+|abcz                |
+|>                   |

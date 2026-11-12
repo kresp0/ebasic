@@ -1,0 +1,10 @@
+--- alive t=3.88
+|                    |
+|>PRINT "alive"      |
+|alive               |
+|>                   |
+--- after_off t=7.38
+|                    |
+|>PRINT "alive"      |
+|alive               |
+|>                   |

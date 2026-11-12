@@ -1,0 +1,10 @@
+wait 1.5
+type PRINT "alive"\n
+wait 0.5
+dump alive
+press OFF
+wait 1
+type PRINT "still"\n
+wait 0.5
+dump after_off
+quit

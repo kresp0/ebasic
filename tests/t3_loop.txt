@@ -1,0 +1,13 @@
+wait 1.5
+type N%=0:REPEAT N%+=1:UNTIL N%=1000:PRINT N%\n
+wait 1
+dump a
+wait 3
+dump b
+type PRINT N%\n
+wait 0.5
+dump c
+type N%=0:REPEAT N%=N%+1:UNTIL N%=3000:PRINT N%\n
+wait 8
+dump d
+quit

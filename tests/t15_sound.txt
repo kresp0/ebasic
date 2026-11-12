@@ -1,0 +1,15 @@
+wait 1.5
+type SOUND 1,-15,53,10\n
+wait 1
+type SOUND 1,-15,89,10\n
+wait 1
+type SOUND 1,-15,137,4:SOUND 1,0,0,4:SOUND 1,-15,137,4\n
+wait 1.5
+type SOUND 0,-15,4,10\n
+wait 1
+type ENVELOPE 1,2,4,-4,0,6,6,0,0,0,0,0,0,0:SOUND 1,1,99,20\n
+wait 2
+type T%=TIME:WAIT 50:PRINT TIME-T%\n
+wait 1
+dump wait
+quit

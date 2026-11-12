@@ -1,0 +1,26 @@
+--- print_key t=2.82
+|                    |
+|                    |
+|1 PRINT "hi"        |
+|>                   |
+--- dim_def t=3.42
+|                    |
+|                    |
+|1 PRINT "hi"        |
+|>DIM DEF            |
+--- list_key t=7.74
+|    1 PRINT "hi"    |
+|   20 A$=LEFT$("AB",|
+|1)                  |
+|>                   |
+--- get_codes t=15.12
+|hi                  |
+|       254        25|
+|5        253        |
+|192         13 >    |
+snap t=18.70
+--- mode1_text t=18.72
+|>                   |
+|                    |
+|                    |
+|                    |

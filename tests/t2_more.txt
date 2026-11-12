@@ -1,0 +1,43 @@
+wait 1.5
+peek D8D2 4
+wait 10
+peek D8D2 4
+type 10 DIM A%(9):FOR I%=0 TO 9:A%(I%)=I%^2:NEXT\n
+type 20 PROCs(A%()):END\n
+type 30 DEF PROCs(B%()):LOCAL T%,I%\n
+type 40 FOR I%=0 TO 9:T%+=B%(I%):NEXT:PRINT "Sum=";T%\n
+type 50 ENDPROC\n
+type RUN\n
+wait 0.5
+dump proc
+type PRINT INSTR("abcdef","cd"),MID$("Genio",2,3),EVAL("3*7")\n
+wait 0.3
+dump strings
+type PRINT 12345678901234567890 ABCDEFGHIJ\bX\n
+wait 0.3
+dump backspace
+type CLS:FOR I=1 TO 30:PRINT I:NEXT\n
+wait 2
+dump scroll30
+type CLS:PRINT TAB(5,2);"XY";POS;VPOS\n
+wait 0.3
+dump tab
+type T%=TIME:K%=INKEY(200):PRINT TIME-T%,K%\n
+wait 3.5
+dump inkey
+type PRINT ~&7FFFFFFF, 2^31, -7 MOD 3, 7 DIV 2, &FF AND 15\n
+wait 0.3
+dump ints
+type CLEAR:N%=0:REPEAT N%+=1:UNTIL N%=3000:PRINT N%\n
+wait 6
+dump loop
+type PRINT "lower";:PRINT "\[]|~@_=-+"\n
+wait 0.3
+dump symbols
+snap
+type *OFF\n
+wait 0.3
+dump star
+wait 1
+peek D8D0 2
+quit

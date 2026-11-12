@@ -1,0 +1,42 @@
+wait 1.5
+type 1
+press BUSCA LA LETRA
+type "hi"\n
+wait 0.3
+dump print_key
+press FRACCIONES / PORCENTAJES
+press SUMA
+wait 0.3
+dump dim_def
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+press REPETIR / BORRAR
+type 20 A$=
+press CINE Y TELEVISION
+type "AB",1)\n
+press IMPRIMIR TEXTO
+wait 0.2
+type \n
+wait 0.6
+dump list_key
+type 30 REPEAT:K=GET:PRINT K;" ";:UNTIL K=13\n
+type RUN\n
+wait 0.6
+press 1 JUGADOR
+press 2 JUGADORES
+press NIVEL
+press BUSCA LA LETRA
+press INTRO
+wait 0.6
+dump get_codes
+type MODE 1:CIRCLE 10,8,7\n
+wait 1
+snap
+dump mode1_text
+quit

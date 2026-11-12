@@ -1,0 +1,18 @@
+wait 1.5
+type 10 REPEAT:K=GET:PRINT K;:UNTIL K=13\n
+type RUN\n
+wait 0.3
+press RETROCESO
+press AVANCE
+press ALT+Ü
+press ALT+;
+press INTRO
+wait 0.5
+dump get
+type PRINT 1
+press RETROCESO
+press AVANCE
+type 2\n
+wait 0.5
+dump line
+quit

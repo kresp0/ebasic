@@ -1,0 +1,50 @@
+wait 1.5
+dump boot
+snap
+type PRINT 2+2\n
+wait 0.3
+dump print
+type PRINT PI,SQR(2)\n
+wait 0.3
+dump float
+type 10 FOR I=1 TO 6:PRINT I*I;" ";:NEXT\n
+type 20 PRINT "n-tilde: " + CHR$164\n
+type RUN\n
+wait 0.5
+dump run
+snap
+type 40 DEF FNf(n):IF n<2 THEN =1 ELSE =n*FNf(n-1)\n
+type PRINT FNf(10),FNf(20)\n
+wait 0.5
+dump fn
+type PRINT 1/0\n
+wait 0.3
+dump err
+type PRINT ~HIMEM,~PAGE,~TOP,~LOMEM\n
+wait 0.3
+dump mem
+snap
+type CLS:T%=TIME\n
+wait 5
+type PRINT TIME-T%\n
+wait 0.3
+dump time
+peek D8D2 6
+type 30 REPEAT:A=A+1:UNTIL 0\n
+type RUN\n
+wait 1
+type \e
+wait 0.5
+dump escape
+type LIST\n
+wait 1
+dump list
+snap
+type PRINT "abc";:A$=GET$:PRINT A$\n
+wait 0.3
+type z
+wait 0.3
+dump get
+type VDU 7\n
+wait 0.5
+quit

@@ -1,0 +1,5 @@
+--- led t=34.66
+|60 PUT &12,&20:END  |
+|70 DEF PROCw(c%):LOC|
+|80 REPEAT UNTIL TIME|
+|>                   |

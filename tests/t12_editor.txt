@@ -1,0 +1,69 @@
+wait 1.5
+dump banner
+type 10 PRINT "ten"\n
+wait 0.3
+dump after_10
+type 20 FOR I=1 TO 2\n
+type 30 PRINT I*I\n
+type 40 NEXT\n
+wait 0.3
+dump four_lines
+press ALT+Ü
+wait 0.4
+dump up_40
+press ALT+Ü
+press ALT+Ü
+wait 0.4
+dump up_20
+press RETROCESO
+press RETROCESO
+type 3
+wait 0.3
+dump insert_3
+press ALT+;
+wait 0.4
+dump saved_moved_30
+press ALT+;
+press ALT+;
+wait 0.4
+dump past_end
+type RUN\n
+wait 1
+dump error_console
+press INTRO
+wait 0.2
+dump error_line_a
+wait 0.25
+dump error_line_b
+press RETROCESO
+wait 0.3
+dump error_hidden
+press RETROCESO
+press JUGADOR DERECHA / DEL
+press JUGADOR DERECHA / DEL
+wait 0.3
+dump fixed_20
+press ALT+;
+press ALT+;
+press ALT+;
+wait 0.4
+type PRNT\n
+wait 0.5
+dump mistake_a
+wait 0.25
+dump mistake_b
+type RUN\n
+wait 1
+dump run_ok
+type L
+wait 0.3
+dump key_kept
+press REPETIR / BORRAR
+type NEW\n
+type 10 PRINT X\n
+type RUN\n
+wait 0.6
+dump two_row_error_a
+wait 0.25
+dump two_row_error_b
+quit

@@ -1,0 +1,13 @@
+wait 1.5
+type 10 REM Caps lock LED (bit 5 of port &12)\n
+type 20 FOR N%=1 TO 5\n
+type 30 PUT &12,&20:PROCw(50)\n
+type 40 PUT &12,0:PROCw(50)\n
+type 50 NEXT\n
+type 60 PUT &12,&20:END\n
+type 70 DEF PROCw(c%):LOCAL t%:t%=TIME+c%\n
+type 80 REPEAT UNTIL TIME>=t%:ENDPROC\n
+type RUN\n
+wait 7
+dump led
+quit
