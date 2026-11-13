@@ -1,4 +1,4 @@
--- Drives the BBC BASIC cartridge in headless MAME: types text on the emulated key matrix,
+-- Drives the EBASIC cartridge in headless MAME: types text on the emulated key matrix,
 -- dumps the 4x20 shadow screen (RAM at SCR, D880) and takes snapshots.
 -- env: BB_SCRIPT = script file, BB_LOG = output log, BB_SCR = address of SCR (hex).
 -- Script lines: "wait <s>", "type <text>" (\n = INTRO, \e = RESPUESTA), "press <field>[+<field>]",

@@ -29,7 +29,7 @@ assert 0 < FRAC < 65536
 
 
 def inc(p):
-    """Phase increment for BBC pitch p (quarter semitones, 89 = A 440 Hz)."""
+    """Phase increment for SOUND pitch p (quarter semitones, 89 = A 440 Hz)."""
     return round(440 * 2 ** ((p - 89) / 48) * 65536 / FS)
 
 

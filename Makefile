@@ -1,4 +1,4 @@
-# EBASIC, BBC BASIC (Z80) v5 for the VTech Genio 2000. Usage: make   (needs sdasz80, sdldz80, python3)
+# EBASIC, a BASIC for the VTech Genio 2000 on R.T. Russell's Z80 interpreter. Usage: make   (needs sdasz80, sdldz80, python3)
 # The interpreter is R.T. Russell's BBCZ80 (zlib licence, bbcz80/), converted mechanically to sdas syntax.
 # Page 1 (interpreter + genio1.s) is linked first; page 2 (genio2.s) then takes the page-1 addresses it needs.
 # Copyright (C) 2026 Santiago Crespo

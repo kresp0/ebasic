@@ -1,8 +1,8 @@
 # EBASIC: a BASIC for the VTech Genio 2000
 
-*By Santiago Crespo, 2026. The BASIC interpreter inside it is R.T. Russell's BBC BASIC (Z80).*
+*By Santiago Crespo, 2026. The BASIC interpreter inside it is R.T. Russell's, from his Z80 BASIC (version 5.2, 2025).*
 
-EBASIC is a 32 KiB cartridge for the Spanish VTech Genio 2000. It uses two 16 KiB pages at 0x8000 and starts automatically (`55 AA 59 45`). The language is **R.T. Russell's BBC BASIC (Z80) v5 interpreter**; around it, EBASIC adds a layer written for the Genio:
+EBASIC is a 32 KiB cartridge for the Spanish VTech Genio 2000. It uses two 16 KiB pages at 0x8000 and starts automatically (`55 AA 59 45`). The interpreter is **R.T. Russell's**, assembled from his Z80 sources; around it, EBASIC adds a layer written for the Genio:
 
 * a **screen editor**: three rows of program above a one-row prompt;
 * a **guide** on the HELP key, with a page and an example for every keyword;
@@ -13,7 +13,7 @@ EBASIC is a 32 KiB cartridge for the Spanish VTech Genio 2000. It uses two 16 Ki
 
 *MAME snapshots, 4x enlarged: start, a program, RUN, three drawings in the 20x16 graphics window (a sine with its axes, bars computed in a loop, a face), the guide's index and its page on PLOT (AYUDA). `tests/sheet.sh` makes this picture from `tests/shots.txt`.*
 
-The language is the full v5: integer, 40-bit float, string and byte variables, arrays, multi-line `DEF PROC`/`DEF FN` with `LOCAL` and recursion, `REPEAT`, `WHILE`, `CASE`, `EXIT`, `ON ERROR`, `EVAL`, `TIME`, `GET`/`INKEY`, `TAB(x,y)` and so on. Programs live in RAM; there is no storage.
+The language has integer, 40-bit float, string and byte variables, arrays, multi-line `DEF PROC`/`DEF FN` with `LOCAL` and recursion, `REPEAT`, `WHILE`, `CASE`, `EXIT`, `ON ERROR`, `EVAL`, `TIME`, `GET`/`INKEY`, `TAB(x,y)` and so on. Programs live in RAM; there is no storage.
 
 **About the name.** EBASIC is not an official edition of BBC BASIC. The interpreter's sources say that the name "BBC BASIC" is used with the BBC's permission and does not transfer to derived works, so this cartridge has its own name. The interpreter modules are Russell's, assembled unchanged except for the banner lines. The first screen reads:
 
@@ -130,7 +130,7 @@ The statements that the CP/M edition answered with `Sorry` (from `HOOK.Z80`) are
 * **`SOUND c,a,p,d`** plays on the 1-bit speaker:
   * channels 1-3 are tones and channel 0 is noise;
   * `a` from -15 to -1 plays, 0 is a rest, and 1-4 selects an envelope;
-  * `p` is the BBC pitch scale (53 = middle C, 4 per semitone), and `d` is in twentieths of a second;
+  * `p` is the pitch scale of Russell's `SOUND` (53 = middle C, 4 per semitone), and `d` is in twentieths of a second;
   * **the program waits while the note plays** (the 46.76 Hz interrupt is far too slow to make sound in the background), and ANSWER stops it.
   * The sound comes from a phase accumulator, at 91.9 kHz with interrupts off. `gen_sound.py` emits the 66 T-state sample loop and asserts its count.
 * **`ENVELOPE`** keeps the pitch part of envelopes 1-4. The volume part cannot be played on a 1-bit speaker.
@@ -202,4 +202,4 @@ No undocumented opcodes are used.
 
 ## Licence
 * 0BSD (`LICENSE`), Copyright (C) 2026 Santiago Crespo: EBASIC's own files, code and documentation (`genio1.s`, `genio2.s`, `stmt.s`, `help.s`, `help.txt`, `shared.inc`, the generators, the `Makefile`, `tests/`, this README). You may use, copy, modify and distribute them for any purpose, with or without fee, without conditions. Until 2026-11-13 they were released under GPL-3.0-or-later; copies taken then may still be used under those terms.
-* zlib licence: `bbcz80/` holds R.T. Russell's BBC BASIC (Z80) sources unchanged (`licence.txt`). The build makes altered versions from them in `out/` (converted to sdas syntax, and `MAIN` with the banner lines changed), and says so in their headers.
+* zlib licence: `bbcz80/` holds R.T. Russell's Z80 BASIC sources unchanged (`licence.txt`; upstream https://github.com/rtrussell/BBCZ80). The build makes altered versions from them in `out/` (converted to sdas syntax, and `MAIN` with the banner lines changed), and says so in their headers.

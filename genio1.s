@@ -1,4 +1,4 @@
-; genio1.s - page 1 of the VTech Genio 2000 OS layer for the BBC BASIC (Z80) v5 interpreter.
+; genio1.s - page 1 of the VTech Genio 2000 OS layer for R.T. Russell's Z80 BASIC interpreter.
 ; Linked with the interpreter: cartridge header, start-up, the entry points the interpreter calls
 ; (most of them are stubs that run the code of page 2), the per-statement Escape test, TIME,
 ; and the errors, whose inline messages must sit in the page that EXTERR reads.
