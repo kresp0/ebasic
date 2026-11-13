@@ -4,7 +4,7 @@
 -- Script lines: "wait <s>", "type <text>" (\n = INTRO, \e = RESPUESTA), "press <field>[+<field>]",
 -- "hold <field> <s>", "dump", "snap", "peek <hex addr> <n>", "quit".
 -- Copyright (C) 2026 Santiago Crespo
--- SPDX-License-Identifier: GPL-3.0-or-later
+-- SPDX-License-Identifier: 0BSD
 local machine = manager.machine
 local mem = machine.devices[":maincpu"].spaces["program"]
 local out = io.open(os.getenv("BB_LOG") or "drive.log", "w")

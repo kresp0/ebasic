@@ -2,7 +2,7 @@
 # (joined with spaces; an empty line starts a new line on the screen), "=..." is the example
 # that ENTER copies into the prompt. Lines starting with "#" are comments.
 # Copyright (C) 2026 Santiago Crespo
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: 0BSD
 
 @Editor keys
 Rows 1-3 show the program, row 4 is the prompt.

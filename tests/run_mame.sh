@@ -1,7 +1,7 @@
 #!/bin/sh
 # Headless MAME run: run_mame.sh <script.txt> <outdir> [seconds] [extra mame args...]
 # Copyright (C) 2026 Santiago Crespo
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: 0BSD
 set -e
 HERE=$(cd "$(dirname "$0")/.." && pwd)
 MAME=${MAME:-$HOME/PROYECTOS/genio2000/mame-upstream}

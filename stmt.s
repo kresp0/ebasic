@@ -3,7 +3,7 @@
 ; Statements are entered from page 1 through R_FAR and continue at the interpreter's XEQ;
 ; arguments are read with the interpreter's own routines (stubs in p1calls.s), as ACORN.Z80 does.
 ; Copyright (C) 2026 Santiago Crespo
-; SPDX-License-Identifier: GPL-3.0-or-later
+; SPDX-License-Identifier: 0BSD
 
 	.include "shared.inc"
 

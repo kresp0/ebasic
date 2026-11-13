@@ -2,7 +2,7 @@
 ; console on the 4x20 LCD, keyboard matrix, line input with recall of program lines.
 ; Reached through the jump table below and the RAM trampolines of genio1.s.
 ; Copyright (C) 2026 Santiago Crespo
-; SPDX-License-Identifier: GPL-3.0-or-later
+; SPDX-License-Identifier: 0BSD
 
 	.include "shared.inc"
 ; Page-1 addresses and call stubs (PBCDL, ESCAPE, AUTONO, PAGE, ...) come from out/p1calls.s

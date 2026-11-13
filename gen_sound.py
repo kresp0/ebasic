@@ -5,7 +5,7 @@
 # SAMPLE_T; every 256 samples a block ends, and the block's length in centiseconds drives the
 # duration and the pitch envelope.
 # Copyright (C) 2026 Santiago Crespo
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: 0BSD
 import sys
 
 CLOCK = 6131790			# CPU clock measured on the unit

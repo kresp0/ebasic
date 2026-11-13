@@ -3,7 +3,7 @@
 ; (most of them are stubs that run the code of page 2), the per-statement Escape test, TIME,
 ; and the errors, whose inline messages must sit in the page that EXTERR reads.
 ; Copyright (C) 2026 Santiago Crespo
-; SPDX-License-Identifier: GPL-3.0-or-later
+; SPDX-License-Identifier: 0BSD
 
 	.include "shared.inc"
 

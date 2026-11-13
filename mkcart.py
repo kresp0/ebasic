@@ -5,7 +5,7 @@
 # without mirroring: repeating the image puts page 2 at 0x83 too, as on a board where A15 is not connected.
 # Fails if any byte lies outside the cartridge window.
 # Copyright (C) 2026 Santiago Crespo
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: 0BSD
 import sys
 
 

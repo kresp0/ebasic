@@ -1,6 +1,6 @@
 ; shared.inc - constants shared by both cartridge pages: RAM layout, page selectors, jump-table slots.
 ; Copyright (C) 2026 Santiago Crespo
-; SPDX-License-Identifier: GPL-3.0-or-later
+; SPDX-License-Identifier: 0BSD
 
 CR = 13
 LF = 10

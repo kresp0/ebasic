@@ -197,5 +197,5 @@ Needs `sdasz80`, `sdldz80` (SDCC 4.5) and `python3`.
 No undocumented opcodes are used.
 
 ## Licence
-* GPL-3.0-or-later, Copyright (C) 2026 Santiago Crespo: EBASIC's own files (`genio1.s`, `genio2.s`, `stmt.s`, `help.s`, `help.txt`, `shared.inc`, the generators, the `Makefile`, `tests/`).
+* 0BSD (`LICENSE`), Copyright (C) 2026 Santiago Crespo: EBASIC's own files, code and documentation (`genio1.s`, `genio2.s`, `stmt.s`, `help.s`, `help.txt`, `shared.inc`, the generators, the `Makefile`, `tests/`, this README). You may use, copy, modify and distribute them for any purpose, with or without fee, without conditions. Until 2026-11-13 they were released under GPL-3.0-or-later; copies taken then may still be used under those terms.
 * zlib licence: `bbcz80/` holds R.T. Russell's BBC BASIC (Z80) sources unchanged (`licence.txt`). The build makes altered versions from them in `out/` (converted to sdas syntax, and `MAIN` with the banner lines changed), and says so in their headers.

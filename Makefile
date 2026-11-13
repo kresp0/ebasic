@@ -2,7 +2,7 @@
 # The interpreter is R.T. Russell's BBCZ80 (zlib licence, bbcz80/), converted mechanically to sdas syntax.
 # Page 1 (interpreter + genio1.s) is linked first; page 2 (genio2.s) then takes the page-1 addresses it needs.
 # Copyright (C) 2026 Santiago Crespo
-# SPDX-License-Identifier: GPL-3.0-or-later
+# SPDX-License-Identifier: 0BSD
 NAME = ebasic_gl2000
 MODS = MAIN EXEC EVAL MATH DATA
 RELS1 = out/genio1.rel $(MODS:%=out/%.rel) out/sound.rel
