@@ -9,6 +9,10 @@ EBASIC is a 32 KiB cartridge for the Spanish VTech Genio 2000. It uses two 16 Ki
 * **keyword keys** on the activity panel, which programs can also read;
 * **sound**, a **20x16 pixel graphics window**, the **Z80 inline assembler**, and **Spanish text** with accented capitals.
 
+![MAME snapshots](screens_mame.png)
+
+*MAME snapshots, 4x enlarged: start, a program, RUN, three drawings in the 20x16 graphics window (a sine with its axes, bars computed in a loop, a face), the guide's index and its page on PLOT (AYUDA). `tests/sheet.sh` makes this picture from `tests/shots.txt`.*
+
 The language is the full v5: integer, 40-bit float, string and byte variables, arrays, multi-line `DEF PROC`/`DEF FN` with `LOCAL` and recursion, `REPEAT`, `WHILE`, `CASE`, `EXIT`, `ON ERROR`, `EVAL`, `TIME`, `GET`/`INKEY`, `TAB(x,y)` and so on. Programs live in RAM; there is no storage.
 
 **About the name.** EBASIC is not an official edition of BBC BASIC. The interpreter's sources say that the name "BBC BASIC" is used with the BBC's permission and does not transfer to derived works, so this cartridge has its own name. The interpreter modules are Russell's, assembled unchanged except for the banner lines. The first screen reads:
