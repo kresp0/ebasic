@@ -1,4 +1,4 @@
-; genio2.s - page 2 of the VTech Genio 2000 OS layer for R.T. Russell's Z80 BASIC interpreter:
+; genio2.s - page 2 of the VTech Genio 2000 OS layer for R.T. Russell's BBCZ80 interpreter:
 ; console on the 4x20 LCD, keyboard matrix, line input with recall of program lines.
 ; Reached through the jump table below and the RAM trampolines of genio1.s.
 ; Copyright (C) 2026 Santiago Crespo

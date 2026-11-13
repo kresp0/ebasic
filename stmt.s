@@ -641,7 +641,7 @@ devxy:	push	hl
 	add	hl, bc
 	ret
 
-; PLOT C,DE,HL (Russell's PLOT codes: bits 0-1 colour, bit 2 absolute, bits 3-7 the shape)
+; PLOT C,DE,HL (BBCZ80's PLOT codes: bits 0-1 colour, bit 2 absolute, bits 3-7 the shape)
 plot::	ld	a, c
 	ld	(PLK), a
 	bit	2, c
