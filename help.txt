@@ -1,6 +1,7 @@
 # Guide shown by the HELP (AYUDA) key. "@TITLE" starts an entry, the following lines are its text
 # (joined with spaces; an empty line starts a new line on the screen), "=..." is the example
-# that ENTER copies into the prompt. Lines starting with "#" are comments.
+# that ENTER copies into the prompt. Lines starting with "#" are comments. A line starting with "?sm " is
+# only in the guide of the ebasic-sm image (Super Memoria), one starting with "?no " only in that of ebasic.
 # Copyright (C) 2026 Santiago Crespo
 # SPDX-License-Identifier: 0BSD
 
@@ -14,6 +15,13 @@ HELP opens it; on a keyword, its page.
 
 @Activity keys
 The top panel types keywords (try them). In a program GET gives 192+n for the n-th key (0-21), 218+n (22-37), down each column: 1 PLAYER 254, 2 PLAYERS 255.
+
+?sm @Star commands
+?sm *DIR (*CAT, *.): the files, 4 at a time (INTRO: more), and the free bytes. *ERA name (*DELETE): deletes one. *FORMAT: erases all.
+?sm =*DIR
+
+?sm @Files
+?sm One open at a time, up to 720 bytes, kept in RAM: OPENIN reads it, CLOSE# saves it. Names get .DAT.
 
 @ABS
 ABS(x): x without its sign.
@@ -48,10 +56,12 @@ AUTO [start[,step]]: numbers the lines you type. ANSWER ends it. No line keys in
 =AUTO 100,10
 
 @BGET
-BGET#c: reads a byte from a file. The Genio has no filing system: error.
+?no BGET#c: reads a byte from a file. The Genio has no filing system: error.
+?sm BGET#c: the next byte of a file.
 
 @BPUT
-BPUT#c,n: writes a byte to a file. The Genio has no filing system: error.
+?no BPUT#c,n: writes a byte to a file. The Genio has no filing system: error.
+?sm BPUT#c,n: byte n to a file.
 
 @BY
 MOVE BY, DRAW BY, PLOT BY, FILL BY: the point is relative to the last one.
@@ -65,7 +75,9 @@ CASE x OF / WHEN a,b: ... / OTHERWISE ... / ENDCASE: runs the WHEN part that mat
 =10 CASE N% OF:WHEN 1:PRINT "one":OTHERWISE PRINT "many":ENDCASE
 
 @CHAIN
-CHAIN name$: loads and runs a program. The Genio has no filing system: error.
+?no CHAIN name$: loads and runs a program. The Genio has no filing system: error.
+?sm CHAIN name$: LOAD, then RUN.
+?sm =CHAIN "DEMO"
 
 @CHR$
 CHR$(n): the character with code n (code page 850: CHR$164 is n-tilde).
@@ -82,13 +94,14 @@ CLEAR: forgets all variables, arrays, procedures and functions.
 CLG: clears the graphics window to the background colour.
 
 @CLOSE
-CLOSE#c: closes a file; CLOSE#0 closes all. Nothing to close on the Genio.
+?no CLOSE#c: closes a file; CLOSE#0 closes all. Nothing to close on the Genio.
+?sm CLOSE#c: closes a file, saving it if written. END too.
 
 @CLS
 CLS: clears the text screen.
 
 @COLOUR
-COLOUR n (also COLOR): text colour. The LCD has one colour: Sorry.
+COLOUR n (also COLOR): text colour: Sorry.
 
 @COS
 COS(x): cosine of x (x in radians).
@@ -154,7 +167,8 @@ ENVELOPE n,t,p1,p2,p3,n1,n2,n3 and 6 volume values (ignored): pitch envelope n (
 =ENVELOPE 1,2,4,-4,0,6,6,0,0,0,0,0,0,0:SOUND 1,1,99,40
 
 @EOF
-EOF#c: true at the end of a file. The Genio has no filing system.
+?no EOF#c: true at the end of a file. The Genio has no filing system.
+?sm EOF#c: TRUE at the end of a file.
 
 @EOR
 a EOR b: exclusive or; on integers, bitwise.
@@ -183,7 +197,8 @@ EXP(x): e to the power x.
 =PRINT EXP(1)
 
 @EXT
-EXT#c: length of a file. The Genio has no filing system.
+?no EXT#c: length of a file. The Genio has no filing system.
+?sm EXT#c: length of a file.
 
 @FALSE
 FALSE: the value 0.
@@ -220,7 +235,8 @@ GOTO line: goes on at that line.
 =10 GOTO 30
 
 @HIMEM
-HIMEM: top of the memory for BASIC (&D880 on the Genio).
+?no HIMEM: top of the memory for BASIC (&D880 on the Genio).
+?sm HIMEM: top of the memory for BASIC (&D440: the Super Memoria code is above it).
 =PRINT ~HIMEM
 
 @IF
@@ -240,7 +256,8 @@ INPUT ["text",] v: asks for a value. INPUT LINE takes the whole line.
 =INPUT "Name",N$:PRINT N$
 
 @INSTALL
-INSTALL name$: loads a library. The Genio has no filing system.
+?no INSTALL name$: loads a library. The Genio has no filing system.
+?sm INSTALL name$: loads a library. Not here.
 
 @INSTR
 INSTR(a$,b$[,n]): where b$ is in a$ (from n), 0 if not there.
@@ -274,7 +291,9 @@ LN(x): natural logarithm of x.
 =PRINT LN(10)
 
 @LOAD
-LOAD name$: loads a program. The Genio has no filing system: error.
+?no LOAD name$: loads a program. The Genio has no filing system: error.
+?sm LOAD name$: loads name.BAS. See SAVE.
+?sm =LOAD "DEMO"
 
 @LOCAL
 LOCAL v,...: variables of a procedure or function only.
@@ -333,13 +352,16 @@ ON x GOTO/GOSUB/PROC a,b,...: jumps to the x-th one. ON ERROR: see ERROR. ON alo
 =10 ON N% GOTO 100,200,300
 
 @OPENIN
-OPENIN(name$): opens a file. The Genio has no filing system: gives 0.
+?no OPENIN(name$): opens a file. The Genio has no filing system: gives 0.
+?sm OPENIN(name$): a file to read; its channel. See Files.
 
 @OPENOUT
-OPENOUT(name$): creates a file. No filing system: gives 0.
+?no OPENOUT(name$): creates a file. No filing system: gives 0.
+?sm OPENOUT(name$): a new file, saved at CLOSE#.
 
 @OPENUP
-OPENUP(name$): opens a file to change it. No filing system: gives 0.
+?no OPENUP(name$): opens a file to change it. No filing system: gives 0.
+?sm OPENUP(name$): OPENIN, saved at CLOSE#.
 
 @OR
 a OR b: true if either is true; on integers, bitwise.
@@ -382,7 +404,8 @@ PRINT items: ; joins, , next field, ' new line. TAB(x), SPC(n) place text; ~ hex
 PROCname(args): calls a procedure made with DEF PROC.
 
 @PTR
-PTR#c: position in a file. The Genio has no filing system.
+?no PTR#c: position in a file. The Genio has no filing system.
+?sm PTR#c: position in a file (can be set).
 
 @PUT
 PUT port,n: n to an I/O port. PUT &12,&20 lights the caps LED; PUT &12,1 switches the Genio off!
@@ -435,7 +458,9 @@ RND(n): random 1 to n. RND(1): 0 to 1. RND: random integer. RND(-n) restarts the
 RUN: runs the program from the start.
 
 @SAVE
-SAVE name$: saves the program. The Genio has no filing system: error.
+?no SAVE name$: saves the program. The Genio has no filing system: error.
+?sm SAVE name$: the program to the SUPER MEMORIA as name.BAS (up to 12 of A-Z 0-9 . - _ space). Swap cartridges when asked.
+?sm =SAVE "DEMO"
 
 @SGN
 SGN(x): -1, 0 or 1, the sign of x.
@@ -481,7 +506,7 @@ SWAP a,b: exchanges two variables.
 =A=1:B=2:SWAP A,B:PRINT A;B
 
 @SYS
-SYS: operating system calls. None on the Genio: Sorry.
+SYS: system calls: Sorry.
 
 @TAB
 TAB(x): to column x. TAB(x,y): to column x, row y (0-19, 0-3).
@@ -499,7 +524,7 @@ TIME: centiseconds since start (can be set: TIME=0).
 =TIME=0:WAIT 100:PRINT TIME
 
 @TINT
-TINT: grey levels. Not on the Genio: Sorry.
+TINT: grey levels: Sorry.
 
 @TO
 TO: part of FOR ... TO.

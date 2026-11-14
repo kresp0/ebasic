@@ -1,0 +1,22 @@
+# SM_INIT=blank: SAVE, LOAD, DIR, ERASE on an unformatted Super Memoria fail without writing; a broken chain
+wait 1.5
+type 10 PRINT "x"\n
+type SAVE "x"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Not formatted 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Not formatted 2
+press AVANCE
+type *DIR\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Not formatted 5
+cart rom
+press INTRO
+wait 1.2
+quit

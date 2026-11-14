@@ -1,0 +1,6 @@
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=2.76
+cart sm t=2.78
+PASS waitfor 0 'Done.' (1.0 s) t=3.92
+cart rom t=3.94
+PASS expectscr 2 '         4' t=10.84
+RESULT pass=3 fail=0

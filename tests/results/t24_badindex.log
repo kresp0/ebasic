@@ -1,0 +1,23 @@
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=5.02
+cart sm t=5.04
+PASS waitfor 0 'Bad index' (0.9 s) t=6.06
+cart rom t=6.08
+PASS waitfor 0 'Bad index' (0.2 s) t=7.60
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=9.86
+cart sm t=9.88
+PASS waitfor 0 'Bad index' (0.9 s) t=10.90
+cart rom t=10.92
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=12.92
+cart sm t=12.94
+PASS waitfor 0 'Bad index' (0.9 s) t=13.96
+cart rom t=13.98
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=17.06
+cart sm t=17.08
+PASS waitfor 0 'Bad index' (0.9 s) t=18.10
+cart rom t=18.12
+PASS expectscr 2 '   10 PRINT "x"' t=20.84
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=22.08
+cart sm t=22.10
+PASS waitfor 0 'Done.' (1.0 s) t=23.24
+cart rom t=23.26
+RESULT pass=12 fail=0

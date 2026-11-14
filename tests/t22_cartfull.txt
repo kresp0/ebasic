@@ -1,0 +1,26 @@
+# SM_INIT=full.bin (PROG.BAS of 1 block, HUGE.TXT, 1 free block). A 2-block program does not fit as a new
+# file; replacing PROG.BAS (1 block) still does not fit, as its block is not free until the end.
+wait 1.5
+type 10 REM aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\n
+type 20 REM bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\n
+type 30 REM cccccccccccccccccccccccc\n
+type SAVE "PROG"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Cartridge full 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Cartridge full 2
+type NEW\n
+type 10 PRINT "small"\n
+type SAVE "PROG"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+quit

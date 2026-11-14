@@ -1,0 +1,23 @@
+# SM_INIT=dirfull.bin (32 files), then full.bin by poking? No: two runs share this script's first part.
+# Directory full: a new name fails and writes nothing; an existing name is replaced in place.
+wait 1.5
+type 10 PRINT "x"\n
+type SAVE "NEW"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Directory full 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Directory full 2
+sram unchanged.bin
+type SAVE "F07"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+quit

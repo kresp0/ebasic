@@ -1,0 +1,71 @@
+# SM_INIT=files.bin: a data file written with OPENOUT, PRINT#, BPUT# and CLOSE#, read back with OPENIN,
+# INPUT#, BGET#, EOF#, EXT#, PTR#; then the errors Eof, Channel, File open, File full, File not found
+wait 1.5
+type 10 F%=OPENOUT "data":PRINT#F%,7,"hola":BPUT#F%,65:CLOSE#F%\n
+type 20 F%=OPENIN "DATA":INPUT#F%,X,A$:PRINT X;A$;BGET#F%;EOF#F%,EXT#F%;PTR#F%:PTR#F%=0:PRINT BGET#F%:CLOSE#F%\n
+type RUN\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+sram written.bin
+cart rom
+press INTRO
+wait 1.2
+expectscr 0          7hola65-1
+expectscr 1         1111
+expectscr 2          7
+press INTRO
+# past the end
+type NEW\n
+type F%=OPENIN "DATA":REPEAT:A%=BGET#F%:UNTIL FALSE\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Eof 2
+press AVANCE
+# the file is still open: another channel, then SAVE
+type PRINT BGET#3\n
+waitfor 0 Channel 2
+press AVANCE
+type 10 PRINT\n
+type SAVE "X"\n
+waitfor 0 File open 2
+press AVANCE
+type CLOSE#0\n
+wait 0.5
+# a file larger than 720 bytes
+type F%=OPENOUT "BIG":FOR I%=1 TO 721:BPUT#F%,I%:NEXT\n
+waitfor 0 File full 2
+press AVANCE
+type CLOSE#F%\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+sram big.bin
+type F%=OPENIN "NONE"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 File not found 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 File not found 2
+expectfw
+quit

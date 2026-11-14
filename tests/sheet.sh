@@ -1,5 +1,5 @@
 #!/bin/sh
-# Runs tests/shots.txt in headless MAME and joins its native LCD snapshots, x4, two per row, into screens_mame.png
+# Runs tests/shots.txt in headless MAME (image ebasic-sm, to show the Super Memoria too) and joins its native LCD snapshots, x4, two per row, into screens_mame.png
 # (the layout of the examples in kresp0/vtech-genio2000). MAME = checkout with mame/genio and roms_local/.
 # Copyright (C) 2026 Santiago Crespo
 # SPDX-License-Identifier: 0BSD
@@ -7,7 +7,7 @@ set -e
 HERE=$(cd "$(dirname "$0")/.." && pwd)
 OUT=$HERE/out/shots
 rm -rf "$OUT"
-"$HERE/tests/run_mame.sh" "$HERE/tests/shots.txt" "$OUT" 60 -snapview native > /dev/null 2>&1 || true
+CART=ebasic-sm_gl2000_mame_64K.bin SM_INIT=blank "$HERE/tests/run_mame.sh" "$HERE/tests/shots.txt" "$OUT" 60 -snapview native > /dev/null 2>&1 || true
 python3 - "$OUT" "$HERE/screens_mame.png" <<'PY'
 import glob, sys
 from PIL import Image

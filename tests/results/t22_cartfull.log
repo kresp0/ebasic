@@ -1,0 +1,10 @@
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=45.72
+cart sm t=45.74
+PASS waitfor 0 'Cartridge full' (0.9 s) t=46.76
+cart rom t=46.78
+PASS waitfor 0 'Cartridge full' (0.2 s) t=48.36
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=52.84
+cart sm t=52.86
+PASS waitfor 0 'Done.' (1.0 s) t=53.98
+cart rom t=54.00
+RESULT pass=5 fail=0

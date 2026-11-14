@@ -1,0 +1,10 @@
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=4.60
+cart sm t=4.62
+PASS waitfor 0 'Not formatted' (0.8 s) t=5.54
+cart rom t=5.56
+PASS waitfor 0 'Not formatted' (0.2 s) t=7.08
+PASS waitfor 1 'SUPER MEMORIA: INTRO' (0.2 s) t=8.10
+cart sm t=8.12
+PASS waitfor 0 'Not formatted' (0.8 s) t=9.04
+cart rom t=9.06
+RESULT pass=5 fail=0

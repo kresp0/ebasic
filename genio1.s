@@ -74,11 +74,11 @@
 lcdini:	.db	0x38, 0x38, 0x38, 0x38, 0x01, 0x02, 0x0C, 0x06
 lcdini_end:
 
-; Entry point that runs slot n of the page-2 jump table
+; Entry point that runs slot n of the page-2 jump table (at 0x8000+3*n, through farj)
 .macro	FAR	name, n
 name:	push	hl
-	ld	hl, #0x8000+3*n
-	jp	R_FAR
+	ld	l, #3*n
+	jr	farj
 .endm
 
 	FAR	p2init, S_INIT
@@ -106,6 +106,8 @@ name:	push	hl
 	FAR	LINE, S_LINE
 	FAR	CIRCLE, S_CIRCLE
 	FAR	ELLIPS, S_ELLIPS
+farj:	ld	h, #0x80
+	jp	R_FAR
 	FAR	RECTAN, S_RECTAN
 	FAR	ORIGIN, S_ORIGIN
 	FAR	POINT, S_POINT
@@ -114,6 +116,20 @@ name:	push	hl
 	FAR	MODEFN, S_MODEFN
 	FAR	WIDFN, S_WIDFN
 	FAR	ADVAL, S_ADVAL
+	.ifne	SMFS
+; LOAD, SAVE, CHAIN, star commands and data files on the Super Memoria (fs.s)
+	FAR	OSSAVE, S_OSSAVE
+	FAR	OSLOAD, S_OSLOAD
+	FAR	OSCLI, S_OSCLI
+	FAR	OSOPEN, S_OSOPEN
+	FAR	OSBGET, S_OSBGET
+	FAR	OSBPUT, S_OSBPUT
+	FAR	OSSTAT, S_OSSTAT
+	FAR	GETEXT, S_GETEXT
+	FAR	GETPTR, S_GETPTR
+	FAR	PUTPTR, S_PUTPTR
+	FAR	OSSHUT, S_OSSHUT
+	.endif
 
 ;TRAP - every 20th call sample the keyboard; then as LTRAP. Destroys A,H,L,F.
 ;LTRAP - abort with Escape if the flag is set. Destroys A,F.
@@ -172,7 +188,11 @@ PROMPT:	push	af
 	jp	p2prompt
 
 ;OSINIT - DE = HIMEM, HL = PAGE, Z set (no auto-run).
+	.ifne	SMFS
+OSINIT:	ld	de, #SMA			; below it, the Super Memoria code (shared.inc)
+	.else
 OSINIT:	ld	de, #XRAM
+	.endif
 	ld	hl, #USER
 	xor	a
 	ret
@@ -183,8 +203,34 @@ RESET:	ld	a, #2
 	xor	a
 	ld	(ERRLEN), a
 	ret
-OSSHUT:
 OSCALL:	ret
+
+	.ifne	SMFS
+;The errors of fs.s in page 2. fserr: number FSERR, its text (in RAM) on the stack.
+badcmd::
+	ld	a, #254
+	call	EXTERR
+	.ascii	"Bad command"
+	.db	0
+badname::
+	ld	a, #204
+	call	EXTERR
+	.ascii	"Bad name"
+	.db	0
+chanerr::
+	ld	a, #222
+	call	EXTERR
+	.ascii	"Channel"
+	.db	0
+openerr::
+	ld	a, #192
+	call	EXTERR
+	.ascii	"File open"
+	.db	0
+fserr::	ld	a, (FSERR)
+	jp	EXTERR
+	.else
+OSSHUT:	ret
 
 ;OSCLI - no star commands exist: an empty command or a comment (*|) is accepted, the rest is an error.
 OSCLI:	ld	a, (hl)
@@ -201,6 +247,23 @@ OSCLI:	ld	a, (hl)
 	call	EXTERR
 	.ascii	"Bad command"
 	.db	0
+
+; No filing system: OPENIN/OPENOUT return 0, CLOSE does nothing, the rest is an error
+OSOPEN:	xor	a
+	ret
+
+OSSAVE:
+OSLOAD:
+OSBGET:
+OSBPUT:
+OSSTAT:
+GETEXT:
+GETPTR:
+PUTPTR:	ld	a, #214
+	call	EXTERR
+	.ascii	"No filing system"
+	.db	0
+	.endif
 
 ;BYE - QUIT: back to the firmware menu (RST 30h)
 BYE:	di
@@ -219,22 +282,6 @@ GETIMS:
 SORRY:	xor	a
 	call	EXTERR
 	.ascii	"Sorry"
-	.db	0
-
-; No filing system: OPENIN/OPENOUT return 0, CLOSE does nothing, the rest is an error
-OSOPEN:	xor	a
-	ret
-
-OSSAVE:
-OSLOAD:
-OSBGET:
-OSBPUT:
-OSSTAT:
-GETEXT:
-GETPTR:
-PUTPTR:	ld	a, #214
-	call	EXTERR
-	.ascii	"No filing system"
 	.db	0
 
 ;---------------------------------------------------------------- keyboard (called by page 2)
@@ -434,6 +481,9 @@ hook:	ld	hl, (TFRAC)
 	ld	(TICKS+2), hl
 	ret
 ramsrc_end:
+	.ifgt	ramsrc_end-ramsrc-(FSTXT-RAMCODE)
+	.error	1			; fs.s's error texts follow the trampolines
+	.endif
 
 R_FAR == RAMCODE+rfar-ramsrc
 R_CALL1 == RAMCODE+rcall1-ramsrc

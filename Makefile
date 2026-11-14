@@ -1,72 +1,105 @@
 # EBASIC, a BASIC for the VTech Genio 2000 on R.T. Russell's BBCZ80. Usage: make   (needs sdasz80, sdldz80, python3)
 # The interpreter is R.T. Russell's BBCZ80 (zlib licence, bbcz80/), converted mechanically to sdas syntax.
 # Page 1 (interpreter + genio1.s) is linked first; page 2 (genio2.s) then takes the page-1 addresses it needs.
+# Two images from the same sources: ebasic (out/) and ebasic-sm (out-sm/, SMFS = 1: the experimental Super
+# Memoria commands, with the memory for programs lowered to make room for their code).
 # Copyright (C) 2026 Santiago Crespo
 # SPDX-License-Identifier: 0BSD
+SM ?= 0
+ifeq ($(SM),1)
+O = out-sm
+NAME = ebasic-sm_gl2000
+P2FS = fs.s
+P2SM = $(O)/smblob.rel
+P1SM = FREE badcmd badname chanerr openerr fserr
+P1SMC = GETTOP CLEAR
+HELPOPT = --sm
+else
+O = out
 NAME = ebasic_gl2000
+endif
 MODS = MAIN EXEC EVAL MATH DATA
-RELS1 = out/genio1.rel $(MODS:%=out/%.rel) out/sound.rel
-P2SRC = genio2.s stmt.s help.s
-RELS2 = $(P2SRC:%.s=out/%.rel) out/helpdata.rel out/ASMB.rel out/p1calls.rel
+RELS1 = $(O)/genio1.rel $(MODS:%=$(O)/%.rel) $(O)/sound.rel
+P2SRC = genio2.s stmt.s help.s $(P2FS)
+RELS2 = $(P2SRC:%.s=$(O)/%.rel) $(O)/helpdata.rel $(P2SM) $(O)/ASMB.rel $(O)/p1calls.rel
 # Page-1 addresses page 2 uses (RAM variables, jump targets) and page-1 routines it calls through a stub
-P1ADDR = ESCAPE XEQ SORRY AUTONO PAGE ERL ACCS BUFFER LISTON COUNT OC PC WIDTH R_CALL1 R_JP1 R_HOOK
-P1CALL = sound kwname kscan offpoll PBCDL EXPRI EXPRS ITEMI COMMA BRAKET NXT TERMQ STOREN VAR ZERO TABIT OUT CRLF ERROR
+P1ADDR = ESCAPE XEQ SORRY AUTONO PAGE ERL ACCS BUFFER LISTON COUNT OC PC WIDTH R_CALL1 R_JP1 R_HOOK $(P1SM)
+P1CALL = sound kwname kscan offpoll PBCDL EXPRI EXPRS ITEMI COMMA BRAKET NXT TERMQ STOREN VAR ZERO TABIT OUT CRLF ERROR $(P1SMC)
+AS = sdasz80 -I$(O)
 
-all: $(NAME)_AT28C256_32K.bin
+all:
+	$(MAKE) SM=0 image
+	$(MAKE) SM=1 image
+
+image: $(NAME)_AT28C256_32K.bin
+
+$(O)/build.inc: Makefile
+	@mkdir -p $(O)
+	echo "SMFS = $(SM)" > $@
 
 # The one change to the interpreter: its banner names this cartridge, its author and Russell's BASIC
-out/MAIN.s: bbcz80/MAIN.Z80 m80_to_sdas.py Makefile
-	@mkdir -p out
+$(O)/MAIN.s: bbcz80/MAIN.Z80 m80_to_sdas.py Makefile
+	@mkdir -p $(O)
 	sed -e "s/^VERMSG:\tDEFM\t'BBC BASIC (Z80) Version 5.00  '/VERMSG:\tDEFM\t'EBASIC 1.0 by'/" \
-	    -e "s/^NOTICE:\tDEFM\t'(C) Copyright R.T.Russell 2025'/NOTICE:\tDEFM\t'Santiago Crespo 2026'\n\tDEFB\tCR\n\tDEFB\tLF\n\tDEFM\t'BASIC by R.T.Russell'/" $< > out/MAIN.Z80
-	grep -q "^VERMSG:.*'EBASIC 1.0 by'" out/MAIN.Z80
-	grep -q "'BASIC by R.T.Russell'" out/MAIN.Z80
-	python3 m80_to_sdas.py out/MAIN.Z80 $@ CODE
+	    -e "s/^NOTICE:\tDEFM\t'(C) Copyright R.T.Russell 2025'/NOTICE:\tDEFM\t'Santiago Crespo 2026'\n\tDEFB\tCR\n\tDEFB\tLF\n\tDEFM\t'BASIC by R.T.Russell'/" $< > $(O)/MAIN.Z80
+	grep -q "^VERMSG:.*'EBASIC 1.0 by'" $(O)/MAIN.Z80
+	grep -q "'BASIC by R.T.Russell'" $(O)/MAIN.Z80
+	python3 m80_to_sdas.py $(O)/MAIN.Z80 $@ CODE
 
-out/%.s: bbcz80/%.Z80 m80_to_sdas.py
-	@mkdir -p out
+$(O)/%.s: bbcz80/%.Z80 m80_to_sdas.py
+	@mkdir -p $(O)
 	python3 m80_to_sdas.py $< $@ $(if $(filter DATA,$*),RAM,$(if $(filter ASMB,$*),P2,CODE))
 
-out/%.rel: out/%.s
-	sdasz80 -l -o $@ $<
+$(O)/%.rel: $(O)/%.s
+	$(AS) -l -o $@ $<
 
-out/genio1.rel: genio1.s shared.inc
-	@mkdir -p out
-	sdasz80 -l -o $@ $<
+$(O)/genio1.rel: genio1.s shared.inc $(O)/build.inc
+	$(AS) -l -o $@ $<
 
-out/page1.ihx: $(RELS1)
+$(O)/page1.ihx: $(RELS1)
 	sdldz80 -n -m -i $@ -b CODE=0x8000 -b RAM=0xC000 $(RELS1)
-	@if grep -q "Undefined Global" out/page1.map; then echo "undefined globals"; exit 1; fi
+	@if grep -q "Undefined Global" $(O)/page1.map; then echo "undefined globals"; exit 1; fi
 
-out/p1calls.s: out/page1.ihx mksyms.py
-	python3 mksyms.py out/page1.map $@ --addr $(P1ADDR) --call $(P1CALL)
+$(O)/p1calls.s: $(O)/page1.ihx mksyms.py
+	python3 mksyms.py $(O)/page1.map $@ --addr $(P1ADDR) --call $(P1CALL)
 
-out/helpdata.s: help.txt gen_help.py bbcz80/MAIN.Z80
-	python3 gen_help.py help.txt bbcz80/MAIN.Z80 $@
+$(O)/helpdata.s: help.txt gen_help.py bbcz80/MAIN.Z80
+	@mkdir -p $(O)
+	python3 gen_help.py help.txt bbcz80/MAIN.Z80 $@ $(HELPOPT)
 
-out/sound.s: gen_sound.py
+# The SMFS code that runs in RAM (absolute addresses), and the page-2 module that holds and copies it
+$(O)/smfs.ihx: smfs.s shared.inc $(O)/build.inc
+	$(AS) -l -o $(O)/smfs.rel smfs.s
+	sdldz80 -n -m -i $@ $(O)/smfs.rel
+
+$(O)/smblob.s: $(O)/smfs.ihx mkblob.py shared.inc
+	python3 mkblob.py shared.inc $(O)/smfs.ihx $(O)/smfs.map $@
+
+$(O)/sound.s: gen_sound.py
+	@mkdir -p $(O)
 	python3 gen_sound.py $@ CODE
 
 # page-2 modules: undefined symbols are global (-g), resolved by the page-2 link
-out/genio2.rel out/stmt.rel out/help.rel: out/%.rel: %.s shared.inc
-	sdasz80 -a -g -l -o $@ $<
+$(O)/genio2.rel $(O)/stmt.rel $(O)/help.rel $(O)/fs.rel: $(O)/%.rel: %.s shared.inc $(O)/build.inc
+	$(AS) -a -g -l -o $@ $<
 
-out/sound.rel: out/sound.s shared.inc
-	sdasz80 -l -o $@ $<
+$(O)/sound.rel: $(O)/sound.s shared.inc $(O)/build.inc
+	$(AS) -l -o $@ $<
 
-out/helpdata.rel out/p1calls.rel: out/%.rel: out/%.s
-	sdasz80 -a -g -l -o $@ $<
+$(O)/helpdata.rel $(O)/smblob.rel $(O)/p1calls.rel: $(O)/%.rel: $(O)/%.s
+	$(AS) -a -g -l -o $@ $<
 
-out/page2.ihx: $(RELS2)
+$(O)/page2.ihx: $(RELS2)
 	sdldz80 -n -m -i $@ -b P2=0x8000 $(RELS2)
-	@if grep -q "Undefined Global" out/page2.map; then grep "Undefined Global" out/page2.map; exit 1; fi
+	@if grep -q "Undefined Global" $(O)/page2.map; then grep "Undefined Global" $(O)/page2.map; exit 1; fi
 
-$(NAME)_AT28C256_32K.bin: out/page1.ihx out/page2.ihx mkcart.py
-	python3 mkcart.py out/page1.ihx out/page2.ihx $@ $(NAME)_mame_64K.bin
+$(NAME)_AT28C256_32K.bin: $(O)/page1.ihx $(O)/page2.ihx mkcart.py
+	python3 mkcart.py $(O)/page1.ihx $(O)/page2.ihx $@ $(NAME)_mame_64K.bin
 
 clean:
-	rm -rf out $(NAME)_AT28C256_32K.bin $(NAME)_mame_64K.bin
-.PHONY: all clean
+	rm -rf out out-sm ebasic_gl2000_AT28C256_32K.bin ebasic_gl2000_mame_64K.bin \
+	  ebasic-sm_gl2000_AT28C256_32K.bin ebasic-sm_gl2000_mame_64K.bin
+.PHONY: all image clean
 .SECONDARY:
 
 # Converter check: rebuild upstream's CP/M edition with sdas and compare it with bin/cpm/BBCBASIC.COM.

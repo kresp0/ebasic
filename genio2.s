@@ -48,9 +48,26 @@ P2TAB:	SLOT	p2init, S_INIT
 	SLOT	h_modefn, S_MODEFN
 	SLOT	h_widfn, S_WIDFN
 	SLOT	h_adval, S_ADVAL
+	.ifne	SMFS
+	SLOT	fs_save, S_OSSAVE
+	SLOT	fs_load, S_OSLOAD
+	SLOT	fs_cli, S_OSCLI
+	SLOT	fs_open, S_OSOPEN
+	SLOT	fs_bget, S_OSBGET
+	SLOT	fs_bput, S_OSBPUT
+	SLOT	fs_stat, S_OSSTAT
+	SLOT	fs_ext, S_GETEXT
+	SLOT	fs_ptr, S_GETPTR
+	SLOT	fs_putp, S_PUTPTR
+	SLOT	fs_shut, S_OSSHUT
+	.endif
 
 ; Start-up, after page 1 has set up RAM, the LCD and caps lock: CGRAM, LED, screen
-p2init:	call	accents
+p2init:
+	.ifne	SMFS
+	call	fsinit
+	.endif
+	call	accents
 	call	setled
 	jp	CLRSCN
 
@@ -144,7 +161,8 @@ putcell:
 	ret
 
 ; Rewrite the LCD from the shadow screen. Destroys A,B,C,H,L,F.
-redraw:	push	de
+redraw::
+	push	de
 	ld	e, #0
 1$:	ld	hl, #SCR
 	ld	d, #0

@@ -1,4 +1,5 @@
-# Snapshots for the README sheet (tests/sheet.sh): start, a program, RUN, three drawings (a sine, bars, a face), the guide's index and a page
+# Snapshots for the README sheet (tests/sheet.sh): start, a program, RUN, a drawing, SAVE asking for the
+# Super Memoria, DIR, the guide's index and its page on SAVE. The Super Memoria starts blank (SM_INIT).
 wait 1.5
 snap
 type 10 FOR I=1 TO 6\n
@@ -12,19 +13,49 @@ snap
 type MODE 1:LINE 0,7,19,7:LINE 1,0,1,15:MOVE 1,7:FOR X=1 TO 19:DRAW X,7+INT(7*SIN((X-1)/3)+.5):NEXT\n
 wait 2
 snap
-type MODE 1:FOR I=0 TO 5:RECTANGLE FILL 1+I*3,0,1,3+INT(12*ABS(SIN(I*.6+.4))):NEXT\n
-wait 2
+press INTRO
+type MODE 0\n
+type *FORMAT\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+type SAVE "SQUARES"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
 snap
-type MODE 1:CIRCLE 9,7,7:CIRCLE FILL 6,9,1:CIRCLE FILL 12,9,1:MOVE 5,5:DRAW 7,3:DRAW 11,3:DRAW 13,5\n
-wait 2
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+type SAVE "DEMO 2"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+type *DIR\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 SQUARES.BAS       43 5
 snap
+press INTRO
+waitfor 0 30976 bytes free 5
+cart rom
+press INTRO
+wait 1.2
 press AYUDA
 wait 0.5
 snap
-type P
+type S
 wait 0.4
-press AVANCE
-press AVANCE
 press INTRO
 wait 0.6
 snap

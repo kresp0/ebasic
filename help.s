@@ -11,6 +11,7 @@
 HLEN = GTMP			; length of the page text in BUFFER
 HNL = GTMP+1			; number of lines
 HEX = GTMP+2			; offset of the example in the entry (0: none), 2 bytes
+HPTR = GTMP+4			; entry of the next index row
 LINES = FMASK			; start and end offset of each line (20 lines)
 
 ; AYUDA in the editor: the entry of the word at the cursor, or the index
@@ -78,21 +79,7 @@ hletter:
 	ret	nc
 	cp	#0x5B
 	ret	nc
-	ld	c, a
-	ld	a, (HKW)
-	ld	b, a
-4$:	ld	a, (HCOUNT)
-	dec	a
-	cp	b
-	jr	z, 5$
-	ld	a, b
-	call	htitle
-	ld	a, (hl)
-	cp	c
-	jr	nc, 5$
-	inc	b
-	jr	4$
-5$:	ld	a, b
+	call	hlfirst
 	ld	(HSEL), a
 	ld	(HTOP), a
 	scf
@@ -124,6 +111,8 @@ hquit:	ld	hl, #FLAGS		; leave (and forget an Escape)
 hdrawidx:
 	ld	a, (HTOP)
 	ld	c, a
+	call	hentry
+	ld	(HPTR), hl
 	ld	e, #0
 1$:	ld	a, (HSEL)
 	cp	c
@@ -139,10 +128,18 @@ hdrawidx:
 	cp	c
 	jr	z, 3$
 	jr	c, 3$
-	ld	a, c
 	push	de
-	call	htitle
+	push	bc
+	ld	hl, (HPTR)
+	push	hl
+	ld	de, #BUFFER
+	call	httl
+	pop	hl
+	call	hskip
+	ld	(HPTR), hl
+	pop	bc
 	pop	de
+	ld	hl, #BUFFER
 3$:	ld	b, #19
 4$:	ld	a, h
 	or	l
@@ -166,16 +163,63 @@ hdrawidx:
 	jr	c, 1$
 	ret
 
-; HL = title of entry A
-htitle:	add	a, a
-	ld	e, a
-	ld	d, #0
-	ld	hl, #HIDX
-	add	hl, de
+; HL = entry A. An entry is its title (a keyword's token, or text ending in 0), its text and its example.
+hentry:	ld	hl, #he0
+	or	a
+	ret	z
+	ld	b, a
+1$:	call	hskip
+	djnz	1$
+	ret
+
+; HL = the entry after the one at HL
+hskip:	ld	a, (hl)
+	inc	hl
+	cp	#0x80
+	call	c, hskz
+	call	hskz
+hskz:	push	bc
+	xor	a
+	ld	b, a
+	ld	c, a
+	cpir
+	pop	bc
+	ret
+
+; The title of the entry at HL to DE, ending in 0 (DE on it). HL = its text.
+httl:	ld	a, (hl)
+	inc	hl
+	cp	#0x80
+	jr	c, 3$
+	push	hl
+	call	kwname
+	pop	hl
+1$:	dec	de			; without the space or "(" kwname ends with
+	ld	a, (de)
+	cp	#0x20
+	jr	z, 1$
+	cp	#0x28
+	jr	z, 1$
+	inc	de
+	xor	a
+2$:	ld	(de), a
+	ret
+3$:	ld	(de), a
+	or	a
+	ret	z
+	inc	de
 	ld	a, (hl)
 	inc	hl
-	ld	h, (hl)
-	ld	l, a
+	jr	3$
+
+; A = the first keyword entry from letter A on
+hlfirst:
+	sub	#0x41
+	ld	e, a
+	ld	d, #0
+	ld	hl, #HLETTER
+	add	hl, de
+	ld	a, (hl)
 	ret
 
 ; The page of entry HSEL: Z to go back to the index, NZ to leave
@@ -237,16 +281,10 @@ hpage:	call	hexpand
 ; BUFFER = title, LF, body, and "LF e.g. example" if there is one
 hexpand:
 	ld	a, (HSEL)
-	call	htitle
+	call	hentry
 	ld	de, #BUFFER
-1$:	ld	a, (hl)			; title
-	inc	hl
-	or	a
-	jr	z, 2$
-	ld	(de), a
-	inc	e
-	jr	1$
-2$:	ld	a, #LF
+	call	httl
+	ld	a, #LF
 	ld	(de), a
 	inc	e
 	call	hdec			; body
@@ -271,44 +309,63 @@ hexpand:
 	ld	(HLEN), a
 	ret
 
-; Expand the text at HL (ending in 0) to DE: bytes 0x80-0xFF are dictionary pieces, 1 escapes the next
-; byte. HL ends after the 0.
+; Expand the text at HL (ending in 0) to DE: 1 escapes the next byte, a pair code (gen_help.py) gives
+; its two symbols. HL ends after the 0.
 hdec:	ld	a, (hl)
 	inc	hl
 	or	a
 	ret	z
-	bit	7, a
-	jr	nz, 2$
 	dec	a
 	jr	nz, 1$
 	ld	a, (hl)			; escaped
 	inc	hl
-	.db	0xFE			; (cp #n: skips the inc a)
+	ld	(de), a
+	inc	e
+	jr	hdec
 1$:	inc	a
-	ld	(de), a
-	inc	e
+	call	hput
 	jr	hdec
-2$:	push	hl
-	and	#0x7F
-	ld	b, a
-	ld	hl, #HDICT
-	inc	b
-	jr	4$
-3$:	ld	a, (hl)
-	inc	a
-	add	a, l
+
+; Symbol A to DE: a character, the title (2), or the two symbols of a pair (0x80-0xFF: pairs 0-127;
+; 3-31 but LF: 129-157)
+hput:	sub	#0x80
+	jr	nc, 1$
+	add	a, #0x80
+	cp	#0x20
+	jr	nc, 3$
+	cp	#LF
+	jr	z, 3$
+	cp	#2
+	jr	z, 4$
+	add	a, #126
+1$:	push	hl
 	ld	l, a
-	jr	nc, 4$
-	inc	h
-4$:	djnz	3$
-	ld	b, (hl)
-5$:	inc	hl
+	ld	h, #0
+	add	hl, hl
+	ld	bc, #HDICT
+	add	hl, bc
 	ld	a, (hl)
-	ld	(de), a
-	inc	e
-	djnz	5$
+	inc	hl
+	push	hl
+	call	hput
 	pop	hl
-	jr	hdec
+	ld	a, (hl)
+	pop	hl
+	jr	hput
+3$:	ld	(de), a
+	inc	de
+	ret
+4$:	push	hl			; the title, at the start of BUFFER up to its LF
+	ld	hl, #BUFFER
+5$:	ld	a, (hl)
+	cp	#LF
+	jr	z, 6$
+	ld	(de), a
+	inc	hl
+	inc	de
+	jr	5$
+6$:	pop	hl
+	ret
 
 egtxt:	.db	LF
 	.ascii	"e.g. "
@@ -442,24 +499,39 @@ hctx:	ld	hl, #ACCS
 	jr	c, 1$
 	inc	l
 2$:	ld	a, (hl)
-	call	hword
-	ret	nc			; no word here
-	ld	b, #1
+	cp	#0x41			; a keyword starts with a letter
+	ccf
+	ret	nc
+	cp	#0x5B
+	ret	nc
+	push	hl
+	call	hlfirst
+	push	af
+	call	hentry
+	pop	bc			; B = the entry
+	ld	(HPTR), hl
+	pop	hl
 3$:	ld	a, (HCOUNT)
 	cp	b
 	ret	z			; NC: not found
 	push	hl
-	ld	a, b
 	push	bc
-	call	htitle
-	ex	de, hl
+	ld	hl, (HPTR)
+	push	hl
+	ld	de, #BUFFER
+	call	httl
+	pop	hl
+	call	hskip
+	ld	(HPTR), hl
 	pop	bc
 	pop	hl
+	ld	de, #BUFFER
+	ld	a, (de)
+	cp	(hl)
+	jr	nz, 7$			; past the keywords of this letter
 	push	hl
-4$:	ld	a, (de)			; title (up to "(") against the word
+4$:	ld	a, (de)			; title against the word
 	or	a
-	jr	z, 5$
-	cp	#0x28
 	jr	z, 5$
 	cp	(hl)
 	jr	nz, 6$
@@ -476,6 +548,8 @@ hctx:	ld	hl, #ACCS
 6$:	pop	hl
 	inc	b
 	jr	3$
+7$:	or	a
+	ret
 
 ; Carry if A can be part of a keyword (A-Z, $)
 hword:	cp	#0x24

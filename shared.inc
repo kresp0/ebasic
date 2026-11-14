@@ -2,6 +2,8 @@
 ; Copyright (C) 2026 Santiago Crespo
 ; SPDX-License-Identifier: 0BSD
 
+	.include "build.inc"	; SMFS = 1 in the ebasic-sm image (Super Memoria commands), 0 in ebasic (out*/build.inc)
+
 CR = 13
 LF = 10
 ESC = 27
@@ -89,7 +91,12 @@ HSEL = SND+24			; help: selected entry, first entry shown, scroll of the page
 HTOP = HSEL+1
 HLINE = HTOP+1
 MEMSHOWN = HLINE+1		; the free memory has been shown on the first screen
-VARS_END = MEMSHOWN+1
+FSERR = MEMSHOWN+1		; the number of an error of fs.s, for fserr in page 1
+FEXT = FSERR+1			; fsname: 1 = ".DAT" for a name without extension, else ".BAS"
+FCH = FEXT+1			; the data file: 0 none open, 1 read, 2 to write at CLOSE
+FLEN = FCH+1			; its length and pointer
+FPTR = FLEN+2			; (its name stays in P_NAME)
+VARS_END = FPTR+2
 RAMCODE = XRAM+0x200		; page-switching trampolines and the ISR hook, copied from page 1
 
 ; Page-2 jump table at 0x8000: slot n is at 0x8000+3*n
@@ -125,3 +132,51 @@ S_CSROFF = 28
 S_MODEFN = 29
 S_WIDFN = 30
 S_ADVAL = 31
+S_OSSAVE = 32
+S_OSLOAD = 33
+S_OSCLI = 34
+S_OSOPEN = 35
+S_OSBGET = 36
+S_OSBPUT = 37
+S_OSSTAT = 38
+S_GETEXT = 39
+S_GETPTR = 40
+S_PUTPTR = 41
+S_OSSHUT = 42
+
+; Super Memoria (fs.s, smfs.s). The SMFS code runs in RAM below DB00 only (as examples/supermem-test of
+; kresp0/vtech-genio2000: nothing is written to the firmware's RAM): SMA-SMA_END, reserved for it by lowering
+; HIMEM, with the parameters first and, between commands, the open data file; and RAM that nothing else needs
+; while a command runs: ACCS, the editor's caches, the rest of the variable area. The variables are in GTMP
+; and FMASK.
+RESV = 0x440			; bytes reserved below XRAM (1,088)
+SMA = XRAM-RESV			; HIMEM
+SMA_END = XRAM
+SMC = 0xC000			; ACCS, the interpreter's string accumulator: free while these commands run
+SMC_END = 0xC100
+SMD = ERRBUF			; the editor's error rows and view, rebuilt after every command
+SMD_END = VIEW+60
+SME = VARS_END			; the rest of EBASIC's variable area, below the trampolines
+SME_END = RAMCODE
+P_NAME = SMA			; a directory entry: name (16 bytes, zero-padded), first block, 0, length, CRC, 10 zeros
+P_FIRST = SMA+16
+P_LEN = SMA+18			; SAVE: the program's length; LOAD: the file's
+P_CRC = SMA+20			; SAVE: the program's CRC; LOAD: the file's
+P_OP = SMA+32			; operation (OP_*)
+P_RES = SMA+33			; result (R_*)
+P_BUF = SMA+34			; the program: where it is (SAVE) or goes (LOAD)
+P_CAP = SMA+36			; LOAD: the room for it
+P_MSG = SMA+38			; the result's text, in RAM (an error's number before it)
+FSTXT = RAMCODE+0x4C		; the texts of fs.s's own errors, copied at start-up (fsinit)
+SMCODE = SMA+40			; SMA's code from here
+FBUF = SMCODE			; the data file, while no command runs
+FMAX = 720
+OP_SAVE = 1
+OP_LOAD = 2
+OP_DIR = 3
+OP_FORMAT = 4
+OP_ERASE = 5
+R_OK = 0
+R_ESC = 1			; cancelled
+R_ERR = 2			; failed: P_MSG says why
+R_BROKEN = 3			; a broken chain while loading: part of the program overwritten

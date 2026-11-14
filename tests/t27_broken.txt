@@ -1,0 +1,18 @@
+# SM_INIT=broken.bin: MID.BAS's chain leads to a metadata block. LOAD stops there and leaves no program.
+wait 1.5
+type 10 PRINT "x"\n
+type LOAD "MID"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Bad file 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Bad file 2
+press AVANCE
+type LIST\n
+wait 0.6
+expectscr 2
+expectscr 3 >
+quit

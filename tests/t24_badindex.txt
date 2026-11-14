@@ -1,0 +1,51 @@
+# SM_INIT=badindex.bin: a wrong metadata CRC stops SAVE, LOAD, ERASE and DIR without writing; FORMAT mends it
+wait 1.5
+type 10 PRINT "x"\n
+type SAVE "prog"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Bad index 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Bad index 2
+press AVANCE
+type *DELETE "PROG"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Bad index 5
+cart rom
+press INTRO
+wait 1.2
+type *.\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Bad index 5
+cart rom
+press INTRO
+wait 1.2
+type LOAD "PROG"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Bad index 5
+cart rom
+press INTRO
+wait 1.2
+press AVANCE
+type LIST\n
+wait 0.6
+expectscr 2    10 PRINT "x"
+sram unchanged.bin
+type *FORMAT\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+quit

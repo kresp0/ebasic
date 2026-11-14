@@ -1,0 +1,135 @@
+# SM_INIT=files.bin: DIR with a .TXT, LOAD too big, names, star commands in a program, cancelling, a
+# Super Memoria that ignores writes, an unformatted one, and OFF
+wait 1.5
+type *CAT\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 PROG.BAS          13 5
+expect 1 NOTES.TXT         22
+expect 2 BIG.BAS         6000
+expect 3 LONG.BAS         846
+press INTRO
+waitfor 0 23808 bytes free 5
+cart rom
+press INTRO
+wait 1.2
+type 10 PRINT "keep"\n
+type LOAD "big"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Too big 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Too big 2
+press AVANCE
+type LIST\n
+wait 0.6
+expectscr 2    10 PRINT "keep"
+type SAVE ""\n
+wait 0.6
+waitfor 0 Bad name 2
+press AVANCE
+type SAVE "A/B"\n
+waitfor 0 Bad name 2
+press AVANCE
+type SAVE "ABCDEFGHIJKLM"\n
+waitfor 0 Bad name 2
+press AVANCE
+type *FOO\n
+waitfor 0 Bad command 2
+press AVANCE
+# RESPUESTA at the request: Escape, nothing read
+type SAVE "keep"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+press RESPUESTA
+waitfor 0 Escape 2
+press AVANCE
+# star commands in a program, and the program goes on
+type 20 *DIR\n
+type 30 OSCLI "ERA NOTES.TXT"\n
+type 40 PRINT "after"\n
+type RUN\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 PROG.BAS          13 5
+press RESPUESTA
+waitfor 0 23808 bytes free 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+expectscr 1 keep
+expectscr 2 after
+press INTRO
+sram erased.bin
+# a cartridge that ignores writes
+type *FORMAT\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart smro
+press INTRO
+waitfor 0 Cannot write 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 Cannot write 2
+press AVANCE
+# a program of four blocks: loaded, run, saved again
+type LOAD "LONG"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+type RUN\n
+wait 0.8
+expectscr 1 long
+expectscr 2 end
+press INTRO
+type SAVE "LONG2"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+sram long2.bin
+# RESPUESTA after EBASIC has been taken out: it asks for EBASIC back, then Escape
+type *CAT\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart none
+press RESPUESTA
+waitfor 2 Put EBASIC back in: 5
+expect 0
+press INTRO
+wait 1.2
+expect 2 Put EBASIC back in:
+cart rom
+press INTRO
+waitfor 0 Escape 3
+press AVANCE
+# OFF while the Super Memoria is asked for: a short press does nothing, held 1.6 s it switches off
+type *DIR\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+hold OFF 0.15
+wait 0.5
+expectoff 0
+expect 1 SUPER MEMORIA: INTRO
+hold OFF 1.6
+wait 0.5
+expectfw
+expectoff 1
+quit

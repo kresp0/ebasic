@@ -1,0 +1,117 @@
+# The Super Memoria (SM_INIT=blank): FORMAT, SAVE, DIR, LOAD, replace, ERASE, CHAIN, star commands
+wait 1.5
+type *FORMAT\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+expect 0 Swap EBASIC for the
+expect 2 RESPUESTA: cancel
+# INTRO with EBASIC still in: it keeps asking
+press INTRO
+wait 1.2
+expect 1 SUPER MEMORIA: INTRO
+wait 1
+expectblink
+cart sm
+press INTRO
+waitfor 0 Done. 5
+expect 2 Put EBASIC back in:
+expect 3 INTRO
+sram formatted.bin
+# INTRO with the Super Memoria still in: it keeps asking
+press INTRO
+wait 1.2
+expect 2 Put EBASIC back in:
+expectblink
+cart rom
+press INTRO
+wait 1.2
+expectscr 3 >
+expectp12 20
+type 10 PRINT "hola"\n
+type 20 A=7\n
+type SAVE "prog"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+sram saved1.bin
+cart rom
+press INTRO
+wait 1.2
+type NEW\n
+type LIST\n
+wait 0.5
+type LOAD "PROG"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+type RUN\n
+wait 0.6
+expectscr 2 hola
+press INTRO
+wait 0.3
+type 30 PRINT A*6\n
+type SAVE "PROG.BAS"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+sram replaced.bin
+cart rom
+press INTRO
+wait 1.2
+type SAVE "other"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+sram saved2.bin
+cart rom
+press INTRO
+wait 1.2
+type *DIR\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 PROG.BAS          31 5
+expect 1 OTHER.BAS         31
+expect 2
+press INTRO
+waitfor 0 30976 bytes free 5
+cart rom
+press INTRO
+wait 1.2
+type *ERA "other"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+type *ERA "other"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 File not found 5
+cart rom
+press INTRO
+wait 1.2
+waitfor 0 File not found 2
+sram erased.bin
+type NEW\n
+type CHAIN "PROG"\n
+waitfor 1 SUPER MEMORIA: INTRO 5
+cart sm
+press INTRO
+waitfor 0 Done. 5
+cart rom
+press INTRO
+wait 1.2
+expectscr 1 hola
+expectscr 2         42
+expectfw
+quit
